@@ -2,14 +2,6 @@
   <img src="public/Fiap-logo.jpg" width="400" /></a>
 </p>
 
-<p align="center">
-  <img src="https://github.com/Fiap-FSD/tech-2/blob/development/src/pos-tech.png" width="400" /></a>
-</p>
-
-<p align="center">
-  <img src="https://github.com/Fiap-FSD/tech-2/blob/development/Fiap-logo.jpg" width="300" /></a>
-</p>
-
 # ✨ Refatoração do Back-End do Blog Post
 
 Este documento descreve o processo de desenvolvimento do refatoramento da parte Back-End do blog post. A aplicação foi inicialmente desenvolvida utilizando a plataforma OutSystems. Para esta nova etapa, o back-end da aplicação foi refatorado utilizando Node.js, utilizando o framkework NestJS, REST APIs, GitHub, Docker e MongoDB para persistência de dados.
