@@ -1,6 +1,6 @@
-import React from 'react';
+'use client';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Container = styled.div`
   padding: 20px;
@@ -47,7 +47,7 @@ interface Post {
   author: string;
 }
 
-const Admin: React.FC = () => {
+const Admin = () => {
   const mockPosts: Post[] = [
     { id: 1, title: 'Post 1', author: 'João' },
     { id: 2, title: 'Post 2', author: 'Maria' },
@@ -66,9 +66,9 @@ const Admin: React.FC = () => {
             {post.title} - {post.author}
           </span>
           <div>
-            <EditButton as={Link as any} to={`/edit/${post.id}`}>
-              Editar
-            </EditButton>
+            <Link href={`/edit/${post.id}`} passHref>
+              <EditButton>Editar</EditButton>
+            </Link>
             <DeleteButton onClick={() => handleDelete(post.id)}>Excluir</DeleteButton>
           </div>
         </PostItem>

@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+'use client';
+import { useState } from 'react';
 import styled from 'styled-components';
-import PostCard from '../Components/PostCard';
+import PostCard from './components/PostCard';
 
 const Container = styled.div`
   padding: 20px;
@@ -27,7 +28,7 @@ interface Post {
   description: string;
 }
 
-const Home: React.FC = () => {
+export default function Home() {
   const [search, setSearch] = useState<string>('');
   const mockPosts: Post[] = [
     { id: 1, title: 'Post 1', author: 'João', description: 'Um breve resumo...' },
@@ -38,7 +39,7 @@ const Home: React.FC = () => {
     post.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  return (
+  return  (
     <Container>
       <SearchInput
         type="text"
@@ -51,6 +52,4 @@ const Home: React.FC = () => {
       ))}
     </Container>
   );
-};
-
-export default Home;
+}
