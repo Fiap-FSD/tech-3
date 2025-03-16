@@ -1,0 +1,52 @@
+{
+  "name": "tech-3",
+  "version": "0.1.0",
+  "contributors": [
+    {
+      "name": "Leonardo Braga",
+      "email": "leobss12@gmail.com"
+    },
+    {
+      "name": "Marcelo Tadini",
+      "email": "tadini.marcelo53@gmail.com"
+    },
+    {
+      "name": "Mauricio Nascimento",
+      "email": "mauriciodgnascimento@gmail.com"
+    },
+    {
+      "name": "Eduarda Kottwitz",
+      "email": "dudakott@gmail.com"
+    },
+    {
+      "name": "João Alegre",
+      "email": "joao.vogelsanger@gmail.com"
+    }
+  ],
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "next lint"
+  },
+  "dependencies": {
+    "@clerk/nextjs": "^6.12.5",
+    "autoprefixer": "^10.4.21",
+    "next": "15.2.2",
+    "postcss": "^8.5.3",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "styled-components": "^6.1.15",
+    "tailwindcss": "^4.0.14"
+  },
+  "devDependencies": {
+    "@eslint/eslintrc": "^3",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "15.2.2",
+    "typescript": "^5"
+  }
+}
