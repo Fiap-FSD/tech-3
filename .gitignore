@@ -3,25 +3,33 @@
 # dependencies
 /node_modules
 /.pnp
+<<<<<<< HEAD
 .pnp.*
 .yarn/*
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+=======
+.pnp.js
+>>>>>>> 9da4ea3fc36642c8215fc5488ea616ce958dd24f
 
 # testing
 /coverage
 
+<<<<<<< HEAD
 # next.js
 /.next/
 /out/
 
+=======
+>>>>>>> 9da4ea3fc36642c8215fc5488ea616ce958dd24f
 # production
 /build
 
 # misc
 .DS_Store
+<<<<<<< HEAD
 *.pem
 
 # debug
@@ -42,3 +50,13 @@ next-env.d.ts
 
 # clerk configuration (can include secrets)
 /.clerk/
+=======
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+>>>>>>> 9da4ea3fc36642c8215fc5488ea616ce958dd24f
