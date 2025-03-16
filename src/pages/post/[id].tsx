@@ -1,3 +1,4 @@
+import { Separator } from '@/Components/Separator';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';

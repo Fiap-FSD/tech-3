@@ -1,6 +1,7 @@
 'use client';
 import styled, { createGlobalStyle } from 'styled-components';
 import Link from 'next/link';
+import { Separator } from '@/Components/Separator';
 
 const HeaderHeight = '80px'; // Defina a altura do header
 
@@ -89,8 +90,12 @@ const Admin = () => {
     <>
       <GlobalStyle />
       <Container>
+      <div>
+        <Separator text="Administração" />
+      </div>
+
         {/* Título em destaque */}
-        <Title>Administração</Title>
+        <Title></Title>
         {mockPosts.map((post) => (
           <PostItem key={post.id}>
             <span>{post.title} - {post.author}</span>

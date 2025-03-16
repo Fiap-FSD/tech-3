@@ -1,4 +1,5 @@
 'use client';
+import { Separator } from '@/Components/Separator';
 import { useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 
@@ -12,10 +13,10 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const HeaderHeight = '120px'; // Aumentando o valor para criar mais espaço
+const HeaderHeight = '80px'; // Aumentando o valor para criar mais espaço
 
 const Form = styled.form`
-  max-width: 400px;
+  max-width: 600px;
   margin: 50px auto;
   padding: 20px;
   border: 1px solid #ddd;
@@ -23,8 +24,8 @@ const Form = styled.form`
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: ${HeaderHeight}; /* Aumentando o espaçamento para não sobrepor o header */
   background-color: #222; /* Cor de fundo do formulário */
+  margin-top: 20px; /* Ajustando o espaço acima do formulário */
 `;
 
 const Input = styled.input`
@@ -34,6 +35,13 @@ const Input = styled.input`
   border-radius: 5px;
   background-color: #333; /* Fundo escuro para os campos de entrada */
   color: white; /* Texto branco nos campos */
+`;
+
+const Container = styled.div`
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: ${HeaderHeight}; // Adicionando o padding para não sobrepor o header
 `;
 
 const Button = styled.button`
@@ -67,6 +75,12 @@ const Login = () => {
 
   return (
     <>
+      <Container>
+        <div>
+            <Separator text="Faça o seu Login" />
+          </div>
+      </Container>
+
       {/* Aplica o estilo global para o fundo preto e texto branco */}
       <GlobalStyle />
       <Form onSubmit={handleSubmit}>
