@@ -1,6 +1,10 @@
 'use client';
 import styled, { createGlobalStyle } from 'styled-components';
 import Link from 'next/link';
+import { Separator } from '@/Components/Separator';
+import { useContext, useEffect } from 'react';
+import { useRouter } from 'next/navigation'; // Usando o novo useRouter do Next.js 13+
+import AuthContext from '@/context/authContext'; // Importando o AuthContext
 
 const HeaderHeight = '80px'; // Defina a altura do header
 
@@ -76,6 +80,18 @@ interface Post {
 }
 
 const Admin = () => {
+
+  const authContext = useContext(AuthContext);
+  const router = useRouter(); // Hook para redirecionamento
+
+  // Verifica se o usuário está autenticado
+  useEffect(() => {
+    if (!authContext?.user) {
+      router.push('/login'); // Redireciona para a página de login se o usuário não estiver autenticado
+    }
+  }, [authContext, router]);
+
+
   const mockPosts: Post[] = [
     { id: 1, title: 'Post 1', author: 'João' },
     { id: 2, title: 'Post 2', author: 'Maria' },
@@ -85,12 +101,21 @@ const Admin = () => {
     console.log('Deletar post:', id);
   };
 
+  // Se o usuário não estiver autenticado, não renderiza o conteúdo
+  if (!authContext?.user) {
+    return null;
+  }
+  
   return (
     <>
       <GlobalStyle />
       <Container>
+      <div>
+        <Separator text="Administração" />
+      </div>
+
         {/* Título em destaque */}
-        <Title>Administração</Title>
+        <Title></Title>
         {mockPosts.map((post) => (
           <PostItem key={post.id}>
             <span>{post.title} - {post.author}</span>

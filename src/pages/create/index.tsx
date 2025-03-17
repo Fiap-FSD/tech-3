@@ -1,69 +1,79 @@
 'use client';
-import { useState } from 'react';
+import { Separator } from '@/Components/Separator';
+import { useContext, useEffect, useState } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import AuthContext from '@/context/authContext'; // Importando o AuthContext
+import { useRouter } from 'next/router';
 
-// Estilizando o fundo global da página
+
+const HeaderHeight = '80px'; 
+
+// Estilo global para o fundo preto e texto branco
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: black;
-    color: white;
+    background-color: black; /* Cor de fundo preto */
+    color: white; /* Cor do texto branco */
     margin: 0;
     font-family: Arial, sans-serif;
   }
 `;
 
-const HeaderHeight = '120px'; // Aumentei a altura do header para criar mais espaço
-
-// Estilizando o formulário
 const Form = styled.form`
   max-width: 600px;
-  margin: 20px auto;
+  margin: 2px auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  margin-top: ${HeaderHeight}; /* Aumenta o espaçamento para não sobrepor o header */
-  background-color: #222; /* Fundo escuro para o formulário */
+  background-color: #333; /* Cor de fundo do formulário */
   border-radius: 5px;
+`;
+
+const Container = styled.div`
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: ${HeaderHeight}; // Adicionando o padding para não sobrepor o header
 `;
 
 const Input = styled.input`
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #555; /* Cor de borda mais escura */
+  border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #333; /* Fundo escuro para o input */
-  color: white; /* Cor do texto dentro do input */
+  background-color: #444; /* Fundo mais escuro para o input */
+  color: white; /* Texto branco dentro do input */
   ::placeholder {
-    color: #aaa; /* Cor do placeholder */
+    color: #aaa; /* Placeholder em cinza */
   }
 `;
 
 const Textarea = styled.textarea`
   padding: 10px;
   font-size: 16px;
-  border: 1px solid #555; /* Cor de borda mais escura */
+  border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #333; /* Fundo escuro para o textarea */
-  color: white; /* Cor do texto dentro do textarea */
+  background-color: #444; /* Fundo mais escuro para o textarea */
+  color: white; /* Texto branco dentro do textarea */
   min-height: 150px;
   ::placeholder {
-    color: #aaa; /* Cor do placeholder */
+    color: #aaa; /* Placeholder em cinza */
   }
 `;
 
 const Button = styled.button`
   padding: 10px;
-  background-color: #007bff;
+  background-color: #007bff; 
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   &:hover {
-    background-color: #0056b3;
+    background-color: #218838; /* Tom mais escuro de verde ao passar o mouse */
   }
 `;
+
 
 interface PostData {
   title: string;
@@ -73,14 +83,34 @@ interface PostData {
 
 const PostCreate = () => {
   const [post, setPost] = useState<PostData>({ title: '', content: '', author: '' });
+  const authContext = useContext(AuthContext); // Usando o AuthContext
+  const router = useRouter(); // Hook para redirecionamento
+
+  // Verifica se o usuário está autenticado
+  useEffect(() => {
+    if (!authContext?.user) {
+      router.push('/login'); // Redireciona para a página de login se o usuário não estiver autenticado
+    }
+  }, [authContext, router]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Post criado:', post);
   };
 
+  // Se o usuário não estiver autenticado, não renderiza o conteúdo
+  if (!authContext?.user) {
+    return null;
+  }
+
   return (
     <>
+    <Container>
+    <div>
+        <Separator text="Inclua uma nova postagem" />
+      </div>
+    </Container>
+    
       <GlobalStyle />
       <Form onSubmit={handleSubmit}>
         <Input

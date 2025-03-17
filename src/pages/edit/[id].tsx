@@ -95,6 +95,7 @@ const PostEdit: React.FC = () => {
   return (
     <>
       <GlobalStyle /> {/* Aplica o estilo global */}
+
       <Form onSubmit={handleSubmit}>
         <Input
           type="text"
