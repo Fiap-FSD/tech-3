@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client';
 import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
@@ -27,6 +28,7 @@ const Container = styled.div`
 
 
 const SearchInput = styled.input`
+  min-width: 450px;
   border: 1px solid #555; /* Ajuste da borda para uma cor mais escura */
   padding: 15px;
   margin-bottom: 10px;

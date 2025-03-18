@@ -1,12 +1,11 @@
-'use client';
-import styled, { createGlobalStyle } from 'styled-components';
-import Link from 'next/link';
-import { Separator } from '@/Components/Separator';
-import { useContext, useEffect } from 'react';
-import { useRouter } from 'next/navigation'; // Usando o novo useRouter do Next.js 13+
-import AuthContext from '@/context/authContext'; // Importando o AuthContext
+"use client";import styled, { createGlobalStyle } from "styled-components";
+import Link from "next/link";
+import { Separator } from "@/app/components/Separator";
+import { useContext, useEffect } from "react";
+import { useRouter } from "next/navigation"; // Usando o novo useRouter do Next.js 13+
+import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
 
-const HeaderHeight = '80px'; // Defina a altura do header
+const HeaderHeight = "80px"; // Defina a altura do header
 
 // Estilizando o fundo global da página
 const GlobalStyle = createGlobalStyle`
@@ -29,7 +28,7 @@ const Container = styled.div`
 const Title = styled.h1`
   font-size: 2.5rem; // Tamanho maior para destacar o título
   font-weight: 700; // Negrito
-  color: white; 
+  color: white;
   text-align: center; // Centraliza o título
   margin-bottom: 1rem;
 `;
@@ -51,7 +50,7 @@ const Button = styled.button`
   border-radius: 5px;
   cursor: pointer;
   font-size: 14px;
-  color: white; 
+  color: white;
 `;
 
 // Botão Editar
@@ -80,50 +79,52 @@ interface Post {
 }
 
 const Admin = () => {
-
   const authContext = useContext(AuthContext);
   const router = useRouter(); // Hook para redirecionamento
 
   // Verifica se o usuário está autenticado
   useEffect(() => {
     if (!authContext?.user) {
-      router.push('/login'); // Redireciona para a página de login se o usuário não estiver autenticado
+      router.push("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
     }
   }, [authContext, router]);
 
-
   const mockPosts: Post[] = [
-    { id: 1, title: 'Post 1', author: 'João' },
-    { id: 2, title: 'Post 2', author: 'Maria' },
+    { id: 1, title: "Post 1", author: "João" },
+    { id: 2, title: "Post 2", author: "Maria" },
   ];
 
   const handleDelete = (id: number) => {
-    console.log('Deletar post:', id);
+    console.log("Deletar post:", id);
   };
 
   // Se o usuário não estiver autenticado, não renderiza o conteúdo
   if (!authContext?.user) {
     return null;
   }
-  
+
   return (
     <>
       <GlobalStyle />
       <Container>
-      <div>
-        <Separator text="Administração" />
-      </div>
+        <div>
+          <Separator text="Administração" />
+        </div>
 
         {/* Título em destaque */}
         <Title></Title>
         {mockPosts.map((post) => (
           <PostItem key={post.id}>
-            <span>{post.title} - {post.author}</span>
+            <span>
+              {post.title} - {post.author}
+            </span>
             <div>
               <Link href={`/edit/${post.id}`} passHref>
                 <EditButton>Editar</EditButton>
               </Link>
-              <DeleteButton onClick={() => handleDelete(post.id)}>Excluir</DeleteButton>
+              <DeleteButton onClick={() => handleDelete(post.id)}>
+                Excluir
+              </DeleteButton>
             </div>
           </PostItem>
         ))}

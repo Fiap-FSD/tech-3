@@ -1,13 +1,11 @@
-'use client';
-import { Separator } from '@/Components/Separator';
-import { useContext, useEffect, useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import AuthContext from '@/context/authContext'; // Importando o AuthContext
-import { useRouter } from 'next/router';
-import Cookies from 'js-cookie'; // Importando o js-cookie para obter o token
+"use client";import { Separator } from "@/app/components/Separator";
+import { useContext, useEffect, useState } from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
+import { useRouter } from "next/router";
+import Cookies from "js-cookie"; // Importando o js-cookie para obter o token
 
-
-const HeaderHeight = '80px'; 
+const HeaderHeight = "80px";
 
 // Estilo global para o fundo preto e texto branco
 const GlobalStyle = createGlobalStyle`
@@ -64,7 +62,7 @@ const Textarea = styled.textarea`
 
 const Button = styled.button`
   padding: 10px;
-  background-color: #007bff; 
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
@@ -74,7 +72,6 @@ const Button = styled.button`
     background-color: #218838; /* Tom mais escuro de verde ao passar o mouse */
   }
 `;
-
 
 interface PostData {
   title: string;
@@ -86,24 +83,31 @@ interface PostData {
 }
 
 const PostCreate = () => {
-  const [post, setPost] = useState<PostData>({ title: '', content: '', author: '', intro: '', imagem: '', video: '' });
+  const [post, setPost] = useState<PostData>({
+    title: "",
+    content: "",
+    author: "",
+    intro: "",
+    imagem: "",
+    video: "",
+  });
   const authContext = useContext(AuthContext); // Usando o AuthContext
   const router = useRouter(); // Hook para redirecionamento
 
   // Verifica se o usuário está autenticado
   useEffect(() => {
     if (!authContext?.user) {
-      router.push('/login'); // Redireciona para a página de login se o usuário não estiver autenticado
+      router.push("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
     }
   }, [authContext, router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const token = Cookies.get('token'); // Obtém o token do cookie
+    const token = Cookies.get("token"); // Obtém o token do cookie
 
     if (!token) {
-      alert('Token inválido ou ausente. Faça login novamente.');
+      alert("Token inválido ou ausente. Faça login novamente.");
       return;
     }
 
@@ -117,14 +121,17 @@ const PostCreate = () => {
     };
 
     try {
-      const response = await fetch('https://blog-posts-hori.onrender.com/post', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho
-        },
-        body: JSON.stringify(postData), // Envia os dados como JSON
-      });
+      const response = await fetch(
+        "https://blog-posts-hori.onrender.com/post",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho
+          },
+          body: JSON.stringify(postData), // Envia os dados como JSON
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`Erro ao criar o post: ${response.statusText}`);
@@ -132,17 +139,17 @@ const PostCreate = () => {
 
       // Verifica se a resposta contém um corpo antes de chamar response.json()
       let data = null;
-      const contentType = response.headers.get('Content-Type');
-      if (contentType && contentType.includes('application/json')) {
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("application/json")) {
         data = await response.json();
       }
 
-      console.log('Post criado com sucesso:', data);
-      alert('Post criado com sucesso!');
-      router.push('/'); // Redireciona para a página inicial após criar o post
+      console.log("Post criado com sucesso:", data);
+      alert("Post criado com sucesso!");
+      router.push("/"); // Redireciona para a página inicial após criar o post
     } catch (error) {
-      console.error('Erro ao criar o post:', error);
-      alert('Erro ao criar o post. Tente novamente.');
+      console.error("Erro ao criar o post:", error);
+      alert("Erro ao criar o post. Tente novamente.");
     }
   };
 
@@ -153,12 +160,12 @@ const PostCreate = () => {
 
   return (
     <>
-    <Container>
-    <div>
-        <Separator text="Inclua uma nova postagem" />
-      </div>
-    </Container>
-    
+      <Container>
+        <div>
+          <Separator text="Inclua uma nova postagem" />
+        </div>
+      </Container>
+
       <GlobalStyle />
       <Form onSubmit={handleSubmit}>
         <Input
@@ -169,7 +176,7 @@ const PostCreate = () => {
             setPost({ ...post, title: e.target.value })
           }
         />
-        
+
         <Textarea
           placeholder="Conteúdo"
           value={post.content}
@@ -205,7 +212,7 @@ const PostCreate = () => {
         />
 
         <Input
-          type="text" 
+          type="text"
           placeholder="Link Video"
           value={post.video}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>

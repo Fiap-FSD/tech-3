@@ -1,10 +1,8 @@
-'use client';
-import { Separator } from '@/Components/Separator';
-import router, { useRouter } from 'next/router';
-import { useState, useContext } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
-import AuthContext from '@/context/authContext';
-
+"use client";import { Separator } from "@/app/components/Separator";
+import { useRouter } from "next/router";
+import { useState, useContext } from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import AuthContext from "@/app/context/authContext";
 
 // Estilo global para fundo preto e textos brancos
 const GlobalStyle = createGlobalStyle`
@@ -16,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const HeaderHeight = '80px'; // Aumentando o valor para criar mais espaço
+const HeaderHeight = "80px"; // Aumentando o valor para criar mais espaço
 
 const Form = styled.form`
   max-width: 600px;
@@ -72,8 +70,8 @@ interface Credentials {
 
 const Login = () => {
   const [credentials, setCredentials] = useState<Credentials>({
-    email: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
   const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
@@ -84,7 +82,7 @@ const Login = () => {
     e.preventDefault();
     // Verifica se o authContext foi fornecido
     if (!authContext) {
-      console.error('AuthContext não foi fornecido.');
+      console.error("AuthContext não foi fornecido.");
       return;
     }
 
@@ -95,18 +93,18 @@ const Login = () => {
       // Verifica se o usuário foi autenticado
       if (authContext.user) {
         // Redireciona com base no papel (role) do usuário
-        if (authContext.user.role === 'admin') {
-          router.push('/admin'); // Redireciona para /admin se for administrador
+        if (authContext.user.role === "admin") {
+          router.push("/admin"); // Redireciona para /admin se for administrador
         } else {
-          router.push('/create'); // Redireciona para /create se for usuário comum
+          router.push("/create"); // Redireciona para /create se for usuário comum
         }
       } else {
         // Se o usuário não existir, exibe uma mensagem de erro
-        setError('Usuário não encontrado. Verifique suas credenciais.');
+        setError("Usuário não encontrado. Verifique suas credenciais.");
       }
     } catch (error) {
-      console.error('Erro no login:', error);
-      setError('Erro ao fazer login. Tente novamente.'); // Mensagem de erro genérica
+      console.error("Erro no login:", error);
+      setError("Erro ao fazer login. Tente novamente."); // Mensagem de erro genérica
     }
   };
 
@@ -121,8 +119,8 @@ const Login = () => {
       {/* Aplica o estilo global para o fundo preto e texto branco */}
       <GlobalStyle />
       <Form onSubmit={handleSubmit}>
-        {error && <ErrorMessage>{error}</ErrorMessage>} {/* Exibe a mensagem de erro */}
-
+        {error && <ErrorMessage>{error}</ErrorMessage>}{" "}
+        {/* Exibe a mensagem de erro */}
         <Input
           type="email"
           placeholder="Email"
@@ -131,7 +129,6 @@ const Login = () => {
             setCredentials({ ...credentials, email: e.target.value })
           }
         />
-       
         <Input
           type="password"
           placeholder="Senha"

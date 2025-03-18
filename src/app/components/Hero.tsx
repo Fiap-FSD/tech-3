@@ -46,8 +46,8 @@ interface HeroProps {
 
 export const Hero = ({
   showSearch = true,
-  title = "Portal de postagens de alunos e professores",
-  description = "Use o campo de busca abaixo para localizar um conteúdo:",
+  title = "TeachHub",
+  description = "Use o campo abaixo para sua busca:",
 }: HeroProps) => {
   return (
     <PageContainer>
