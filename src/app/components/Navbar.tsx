@@ -1,6 +1,8 @@
 'use client';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useContext } from 'react';
+import AuthContext from '../../context/authContext';
 
 // Estilizando o Header
 const Header = styled.header`
@@ -58,12 +60,37 @@ const AuthContainer = styled.div`
   color: white;
 `;
 
+const LogoutButton = styled.button`
+  background-color: transparent;
+  border: 1px solid white;
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background-color: white;
+    color: black;
+  }
+`;
+
+const NavRight = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: auto; /* Move o botão para o canto direito */
+`;
+
 // Estilizando o conteúdo da página, com o padding-top para compensar o Header fixo
 const MainContent = styled.main`
   padding-top: 80px;  // Tamanho do Header para empurrar o conteúdo para baixo
 `;
 
 export default function Navbar() {
+
+  const authContext = useContext(AuthContext);
+  const logout = authContext?.logout;
+  const user = authContext?.user;
+
   return (
     <>
       <Header>
@@ -78,6 +105,11 @@ export default function Navbar() {
             <NavLink href="/admin">Admin</NavLink>
             <NavLink href="/login">Login</NavLink>
           </Nav>
+
+          <NavRight>
+            {user && <LogoutButton onClick={logout}>Logout</LogoutButton>}
+          </NavRight>
+
         </HeaderContent>
       </Header>
       </>

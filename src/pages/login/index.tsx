@@ -67,14 +67,12 @@ const ErrorMessage = styled.p`
 
 interface Credentials {
   email: string;
-  name: string;
   password: string;
 }
 
 const Login = () => {
   const [credentials, setCredentials] = useState<Credentials>({
     email: '',
-    name: '',
     password: '',
   });
 
@@ -133,14 +131,7 @@ const Login = () => {
             setCredentials({ ...credentials, email: e.target.value })
           }
         />
-        <Input
-          type="text"
-          placeholder="Nome"
-          value={credentials.name}
-          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setCredentials({ ...credentials, name: e.target.value })
-          }
-        />
+       
         <Input
           type="password"
           placeholder="Senha"

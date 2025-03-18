@@ -89,7 +89,7 @@ const PostCard = ({ post }: PostCardProps) => {
           <Title>{post.title}</Title>
           <Author>Autor: {post.author}</Author>
           <Description>{post.description}</Description>
-          <ReadMore href={`/posts/${post.id}`}>Ler mais</ReadMore> {/* Certifique-se de que o ID está correto */}
+          <ReadMore href={`/post/${post.id}`}>Ler mais</ReadMore> {/* Certifique-se de que o ID está correto */}
         </>
       )}
     </Card>

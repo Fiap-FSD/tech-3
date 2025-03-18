@@ -3,6 +3,7 @@ import { createContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
+import { jwtDecode } from 'jwt-decode'; // Importa a biblioteca jwt-decode
 
 // Define os tipos para o contexto
 interface User {
@@ -30,43 +31,76 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const login = async (credentials: { email: string; password: string }) => {
     try {
-      const response = await axios.post('http://localhost:3001/api/auth/login', credentials);
-      if (response.data.token) {
-        Cookies.set('token', response.data.token, { expires: 7 });
-        setUser(response.data.user);
-        router.push(response.data.user.role === 'admin' ? '/admin' : '/create');
+      const response = await axios.post('https://blog-posts-hori.onrender.com/auth/login', credentials);
+
+      console.log('Resposta completa da API de login:', response.data); // Log para depuração
+
+      if (response.data.access_token) {
+        Cookies.set('token', response.data.access_token, { expires: 7 });
+
+        // Decodifica o token para extrair as informações do usuário
+        const decodedToken: any = jwtDecode(response.data.access_token);
+        console.log('Token decodificado:', decodedToken); // Log para depuração
+
+        const user = {
+          id: decodedToken.sub,
+          name: decodedToken.name || 'Unknown', // Ensure 'name' is included
+          email: decodedToken.email,
+          role: decodedToken.role,
+        };
+
+        if (user && user.role) {
+          setUser(user);
+          router.push(user.role === 'admin' ? '/admin' : '/create');
+        } else {
+          console.error('Dados do usuário estão incompletos ou ausentes:', user); // Log detalhado
+          setUser(null); // Garante que o estado do usuário seja limpo
+          alert('Erro: Dados do usuário estão incompletos ou ausentes. Por favor, tente novamente mais tarde.');
+        }
+      } else {
+        console.error('Token de acesso não encontrado na resposta:', response.data); // Log detalhado
+        throw new Error('Token de acesso não encontrado na resposta.');
       }
     } catch (error) {
       console.error('Erro no login:', error);
+      alert('Erro ao realizar login. Por favor, verifique suas credenciais ou tente novamente mais tarde.');
       throw error;
     }
   };
 
   const logout = () => {
-    Cookies.remove('token');
+    Cookies.remove('access_token');
     setUser(null);
     router.push('/login');
   };
 
   const checkAuth = async () => {
-    const token = Cookies.get('token');
+    const token = Cookies.get('token'); // Obtém o token do cookie
     if (token) {
       try {
-        const response = await axios.get('http://localhost:3001/api/auth/me', {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-        setUser(response.data.user);
+        // Decodifica o token para extrair as informações do usuário
+        const decodedToken: any = jwtDecode(token);
+        console.log('Token decodificado no checkAuth:', decodedToken); // Log para depuração
+
+        const user = {
+          id: decodedToken.sub,
+          name: decodedToken.name || 'Unknown', // Garante que 'name' esteja presente
+          email: decodedToken.email,
+          role: decodedToken.role,
+        };
+
+        setUser(user); // Define o usuário no estado
       } catch (error) {
-        console.error('Erro ao verificar autenticação:', error);
-        Cookies.remove('token');
+        console.error('Erro ao decodificar o token:', error);
+        Cookies.remove('token'); // Remove o token inválido
         setUser(null);
       }
     }
-    setLoading(false);
+    setLoading(false); // Define o carregamento como concluído
   };
 
   useEffect(() => {
-    checkAuth();
+    checkAuth(); // Verifica a autenticação ao carregar o aplicativo
   }, []);
 
   const value = {

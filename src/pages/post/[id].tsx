@@ -1,80 +1,76 @@
-import { useRouter } from 'next/router';
+'use client';
 import { useEffect, useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import { useParams } from 'next/navigation';
+import styled from 'styled-components';
 
-// Estilizando o fundo global da página
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: black; /* Fundo preto */
-    color: white; /* Texto branco */
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-`;
-
+// Estilização do container
 const Container = styled.div`
-  padding: 100px 20px 20px; /* Adiciona espaço no topo para não sobrepor o header */
+  padding: 20px;
   max-width: 800px;
-  margin: 0 auto;
-  background-color: #222; /* Cor escura para o fundo do conteúdo */
+  margin: 100px auto;
+  background-color: #333;
+  color: white;
   border-radius: 5px;
-
-  @media (max-width: 600px) {
-    padding: 10px 10px 10px; /* Ajuste para telas menores */
-  }
 `;
 
 const Title = styled.h1`
-  font-size: 28px;
+  font-size: 24px;
   margin-bottom: 10px;
-  color: white; /* Título branco */
 `;
 
 const Author = styled.p`
   font-size: 16px;
-  color: #ccc; /* Autor com cor cinza claro */
+  color: #aaa;
   margin-bottom: 20px;
 `;
 
 const Content = styled.div`
-  font-size: 18px;
-  line-height: 1.6;
-  color: white; /* Texto do conteúdo em branco */
+  font-size: 16px;
+  line-height: 1.5;
 `;
 
-interface PostData {
+interface Post {
+  id: string;
   title: string;
-  content: string;
   author: string;
+  content: string;
 }
 
-const PostView = () => {
-  const [mockPost, setMockPost] = useState<PostData>({
-    title: '',
-    author: '',
-    content: '',
-  });
-
-  const router = useRouter();
-  const { id } = router.query;
+const PostDetails = () => {
+  const params = useParams(); // Obtém os parâmetros da URL
+  const id = params?.id as string; // Garante que 'id' seja tratado como uma string
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
-    if (id) {
-      const fetchedPost = { title: `Post Exemplo de ${id}`, content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit... do post ${id}`, author: `Author do post ${id}` };
-      setMockPost(fetchedPost);
-    }
+    if (!id) return;
+
+    const fetchPost = async () => {
+      try {
+        const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`);
+        if (!response.ok) {
+          throw new Error(`Erro ao buscar o post com ID ${id}: ${response.statusText}`);
+        }
+        const data = await response.json();
+        setPost(data);
+      } catch (error) {
+        console.error('Erro ao buscar os detalhes do post:', error);
+      }
+    };
+
+    fetchPost();
   }, [id]);
 
+  if (!post) {
+    return <Container>Carregando...</Container>;
+  }
+
   return (
-    <>
-      <GlobalStyle /> {/* Aplica o estilo global */}
-      <Container>
-        <Title>{mockPost.title}</Title>
-        <Author>Autor: {mockPost.author}</Author>
-        <Content>{mockPost.content}</Content>
-      </Container>
-    </>
+    <Container>
+      <Title>{post.title}</Title>
+      <Author>Autor: {post.author}</Author>
+      <Content>{post.content}</Content>
+    </Container>
   );
 };
 
-export default PostView;
+export default PostDetails;
