@@ -1,6 +1,7 @@
 'use client';
 import styled from 'styled-components';
 import Link from 'next/link';
+import { useState } from 'react';
 
 // Estilizando o Card
 const Card = styled.div`
@@ -55,12 +56,42 @@ interface PostCardProps {
 }
 
 const PostCard = ({ post }: PostCardProps) => {
+  const [postDetails, setPostDetails] = useState<Post | null>(null);
+
+  const handleReadMore = async () => {
+    try {
+      const response = await fetch(`https://blog-posts-hori.onrender.com/post/${post.id}`);
+      if (!response.ok) {
+        throw new Error(`Erro ao buscar o post com ID ${post.id}: ${response.statusText}`);
+      }
+      const data = await response.json();
+      setPostDetails(data); // Atualiza os detalhes do post
+    } catch (error) {
+      console.error('Erro ao buscar os detalhes do post:', error);
+    }
+  };
+
   return (
     <Card>
-      <Title>{post.title}</Title>
-      <Author>Autor: {post.author}</Author>
-      <Description>{post.description}</Description>
-      <ReadMore href={`/post/${post.id}`}>Ler mais</ReadMore>
+      {postDetails ? (
+        // Renderiza os detalhes do post
+        <>
+          <Title>{postDetails.title}</Title>
+          <Author>Autor: {postDetails.author}</Author>
+          <Description>{postDetails.description}</Description>
+          <ReadMore href="#" onClick={(e) => { e.preventDefault(); setPostDetails(null); }}>
+            Voltar
+          </ReadMore>
+        </>
+      ) : (
+        // Renderiza o resumo do post
+        <>
+          <Title>{post.title}</Title>
+          <Author>Autor: {post.author}</Author>
+          <Description>{post.description}</Description>
+          <ReadMore href={`/posts/${post.id}`}>Ler mais</ReadMore> {/* Certifique-se de que o ID está correto */}
+        </>
+      )}
     </Card>
   );
 };

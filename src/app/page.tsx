@@ -1,5 +1,5 @@
 'use client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import PostCard from './components/PostCard';
 import Navbar from './components/Navbar';
@@ -8,7 +8,7 @@ import { Hero } from './components/Hero';
 // Estilizando o fundo global da página
 const GlobalStyle = createGlobalStyle`
   body {
-    background-color: black; /* Fundo preto */
+    background-color: #000000; /* Fundo preto atualizado */
     color: white; /* Texto branco */
     margin: 0;
     font-family: Arial, sans-serif;
@@ -59,13 +59,33 @@ interface Post {
 
 export default function Home() {
   const [search, setSearch] = useState<string>('');
-  const mockPosts: Post[] = [
-    { id: 1, title: 'Post 1', author: 'João', description: 'Um breve resumo...' },
-    { id: 2, title: 'Post 2', author: 'Maria', description: 'Outro resumo...' },
-  ];
+  const [posts, setPosts] = useState<Post[]>([]); // Estado para armazenar os posts
 
-  const filteredPosts = mockPosts.filter((post) =>
-    post.title.toLowerCase().includes(search.toLowerCase())
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        const response = await fetch('https://blog-posts-hori.onrender.com/post'); // Chamada à API
+        const data = await response.json();
+        const mappedPosts = data.map((post: any) => ({
+          id: post._id, // Mapeia _id para id
+          title: post.title,
+          author: post.author,
+          description: post.intro, // Usa intro como descrição
+          ...post, // Inclui outras propriedades, se necessário
+        }));
+        setPosts(mappedPosts); // Atualiza o estado com os dados mapeados
+      } catch (error) {
+        console.error('Erro ao buscar os posts:', error);
+      }
+    };
+
+    fetchPosts();
+  }, []); // Executa apenas uma vez ao montar o componente
+
+  const filteredPosts = posts.filter((post) =>
+    (post.title?.toLowerCase().includes(search.toLowerCase()) || // Verifica se title existe
+     post.description?.toLowerCase().includes(search.toLowerCase()) || // Verifica se description existe
+     post.author?.toLowerCase().includes(search.toLowerCase())) // Verifica se author existe
   );
 
   return (
@@ -91,8 +111,8 @@ export default function Home() {
           </div>
 
           <Container>
-            {filteredPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
+            {filteredPosts.map((post, index) => (
+              <PostCard key={post.id || index} post={post} /> // Usa o índice como fallback para a key
             ))}
           </Container>
         </div>
