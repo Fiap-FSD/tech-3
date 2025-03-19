@@ -45,8 +45,8 @@ interface HeroProps {
 }
 
 export const Hero = ({
-  showSearch = true,
-  title = "TeachHub",
+  // showSearch = true,
+  title = "Blog Post",
   description = "Use o campo abaixo para sua busca:",
 }: HeroProps) => {
   return (

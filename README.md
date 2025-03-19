@@ -2,18 +2,17 @@
   <img src="public/Fiap-logo.jpg" width="400" /></a>
 </p>
 
-# ✨ Refatoração do Back-End do Blog Post
+# ✨ Implementação do Front-End do Blog Post
 
-Este documento descreve o processo de desenvolvimento do refatoramento da parte Back-End do blog post. A aplicação foi inicialmente desenvolvida utilizando a plataforma OutSystems. Para esta nova etapa, o back-end da aplicação foi refatorado utilizando Node.js, utilizando o framkework NestJS, REST APIs, GitHub, Docker e MongoDB para persistência de dados.
+Este documento descreve o processo de criação da interface gráfica após o desenvolvimento do refatoramento da parte Back-End do blog post. A aplicação foi inicialmente desenvolvida utilizando a plataforma OutSystems. Para esta nova etapa, o front-end da aplicação foi desenvolvida utilizando React.js, utilizando o framkework NextJS, Axios, GitHub, tailwindcss e styled-components para estilização.
 
 Será apresentada a maneira de execução de cada step do projeto contendo informações cruciais sobre como configurar, usar e contribuir com o projeto.
 
 ## 🎯 Objetivos do Projeto
 
-- Refatorar o back-end da aplicação de blogging para professores, e alunos, utilizando Node.js.
-- Implementação de uma API RESTful com endpoints definidos para a criação, leitura, edição, exclusão e busca de postagens.
-- Utilizar MongoDB como banco de dados para persistência dos dados.
-- Utilizar Docker para garantir consistência, escalabilidade e facilitar o deploy do projeto.
+- Desenvolver uma interface gráfica para aplicação de blogging, utilizando React.js.
+- Aplicação deve ser responsiva, acessível e fácil de usar.
+- Implementação do uso dos endpoints REST, já implementados no back-end, para permitir docentes e alunos a interagir.
 
 ## 🛠️ Ferramentas Utilizadas
 
@@ -23,186 +22,73 @@ A equipe utilizou as seguintes ferramentas durante o desenvolvimento do projeto:
 
 - **GitHub**: O GitHub ofereceu controle de versão, permitindo que cada membro da equipe trabalhasse em diferentes funcionalidades sem afetar o código principal. A utilização de pull requests facilitou a revisão de código e a integração das mudanças, garantindo qualidade e consistência. O GitHub também integrou ferramentas de CI/CD, automatizando testes e o deploy do código.
 
-- **MongoDB**: O banco de dados NoSQL foi escolhido por sua flexibilidade e integração com Node.js através de bibliotecas como o Mongoose, permitindo uma maneira dinâmica de armazenar dados.
+- **Axios**: É uma biblioteca JavaScript para fazer requisições HTTP. Ele foi escolhido por ser fácil de usar e configurar, além de fornecer recursos como interceptadores e a capacidade de lidar com requisições e respostas de maneira eficiente.
 
-- **Docker**: O Docker permitiu o empacotamento da aplicação e suas dependências em contêineres, garantindo consistência entre os ambientes de desenvolvimento e produção. O Docker Hub foi utilizado para armazenar e compartilhar as imagens dos contêineres.
+- **tailwindcss**: Um framework CSS utilitário que facilita a construção de interfaces responsivas e personalizáveis. Permitiu ajeitar a estilizaão diretamente em `JSX` o que acelerou a construção da interface do usuário
 
-- **Render**: Foi utilizado o Render como plataforma de hospedagem, o que simplificou o processo de deploy e gerenciamento da aplicação. O Render forneceu uma infraestrutura que permitiu que a equipe se concentrasse no desenvolvimento, sem se preocupar com a administração de servidores. O uso do Render foi fundamental para otimizar o fluxo de trabalho, garantindo agilidade no deploy e confiabilidade na execução da aplicação.
+- **styled-components**: O Styled-components é uma biblioteca que permite escrever CSS dentro de componentes React, criando componentes de estilo com escopo isolado, tornando o CSS mais modular e reutilizável. Foi útil em evitar conflitos ed estilos entre diferentes partes da aplicação.
 
 
 ## 🏗️ Arquitetura da Aplicação
 
-A arquitetura do projeto segue o padrão de **API RESTful**, que permite interações simples e claras entre o cliente e o servidor. A principal divisão da aplicação é composta por:
+A arquitetura do projeto segue o padrão da **NextJS**, que utiliza uma arquitetura JAMStack, que se caracteriza por um desenvolvimento de front-end independente de back-end, com foco em APIs e serviços de terceiros, e que permite a entrega de aplicações web rápidas e eficientes. Seguindo uma estrutura **App Routes** e **Page Router** permitindo que o projeto seja organizadod e forma modular e escalável, promevendo uma navegação intuitiva e otimizada, com rotas dinâmicas, layouts reutilizáveis e carregamento assíncrono de dados. Essa abordagem melhora tanto a experiência de desenvolvimento quanto a experiência do usuário, tornando o código mais limpo e fácil de manter.
 
-- **NestJS**: Framework para o desenvolvimento do back-end, que organiza o código em módulos e controladores, facilitando a manutenção, escalabilidade e reutilização de componentes.
-- **MongoDB**: Banco de dados NoSQL utilizado para persistir as postagens e informações de usuários de forma flexível.
-- **Docker**: Utilizado para empacotar a aplicação e suas dependências, garantindo consistência entre os ambientes de desenvolvimento e produção.
-- **Render**: Plataforma de hospedagem utilizada para o deploy da aplicação, permitindo o gerenciamento simplificado de servidores e escalabilidade.
+A arquitetura segue o padrão **NextJS**, organizada em **App e Pages**, com:
 
-A arquitetura segue o padrão **NestJS**, organizada em **Controller, Providers, Modules**, com:
+- **App**: Define o layout global da aplicação e a página principal (root) do aplicativo. Além de conter os componentes que serão layout comum para várias páginas.
+- **Pages**: Contém subdiretório, que são tratatos como componentes de rotas.
 
-- **Controller**: Responsável pelo processamento das requisições HTTP e retorno de uma resposta para o client.
-- **Providers**: São classes que executam a lógica central da aplicação. Podem ser de vários tipos de classes, como services, repositories e helpers.
-- **Modules**: Organizam a aplicação de maneira modular e registram os componentes que ela utiliza. E cada módulo gerencia um conjunto específico de responsabilidades e pode importar ou exportar outros módulos para compartilhar funcionalidades.
   
 
 ## 🚀 Como rodar o projeto
 
 ### Pré-requisitos
 
-- Node.js instalado (versão recomendada: 16.x ou superior).
-- Docker instalado.
-- MongoDB rodando localmente ou utilizando uma instância em nuvem.
+- Node.js instalado (versão recomendada: 20.x ou superior).
+- npm instalado.
 
 ### Passos:
 
 #### Clone este repositório:
 
 ```bash
-git clone https://github.com/Fiap-FSD/tech-2.git
-cd blog-posts
+git clone https://github.com/Fiap-FSD/tech-3.git
+cd tech-3
 ```
 
-#### Configure o ambiente:
+#### Instale as bibliotecas:
 
-Crie um arquivo `.env` na raiz do projeto e insira nele:
+No terminal do projeto, rode:
 
 ```bash
-PORT=3000
-API_SECRET=batman
-MONGO_URI=mongodb+srv://fiapfsd:SDHdwwa1MNK4GObi@blogposts.faa90.mongodb.net/?retryWrites=true&w=majority&appName=BlogPosts
+ npm install
 ```
 
-#### Rodando no Docker:
+#### Rodando Localmente:
 
-Para construir e rodar a aplicação com Docker, utilize os seguintes comandos:
-
-- Verifique o docker e docker compose
+No terminal do projeto, rode:
 
 ```bash
-docker --version
-docker-compose --version
-```
-- Construa e inicie os conteiners
-
-```bash
-docker-compose build
-docker-compose up
+ npm run dev
 ```
 
-## 🌐 APIs
+#### Abra no seu navegador
 
-Utilizar APIs para criar o backend de um sistema de blog post oferece uma série de vantagens que tornam a aplicação mais escalável, flexível e fácil de manter. Abaixo são apresentadas as requisições utilizadas pelo grupo: 
+Com o link que aparecerá no seu terminal, copie e cole no seu navegador.
 
-#### URL
-
-A URL base para todas as requisições da API é a seguinte:
-
-```http
-  https://blog-post-hori.onrender.com/
-```
-
-#### Manual da API
-
-As URLs do manual da API são as seguintes:
-
-```http
-  https://blog-post-hori.onrender.com/api
-```
-
-```http
-  https://blog-post-hori.onrender.com/docs
-```
-
-- ##### AuthController_login - Utilizado para autenticar usuário
-
-Este endpoint é utilizado para realizar o login de um usuário já cadastrado e obter o token necessário para realizar operações protegidas (como **POST**, **PUT** e **DELETE**) na API.  
-
-```http
-  POST URL/auth/login
-```
-
-- ##### AuthController_register - Utilizado para criar usuário
-
-Este endpoint é utilizado para criar um novo usuário no sistema. Ele recebe o email e senha (criptografada) do usuário e cria um registro no banco de dados.
-
-```http
-  POST URL/auth/register
-```
-
-- ##### PostController_getAllPost - Obter todas as postagens
-
-Este endpoint é utilizado para obter todas as postagens do blog. Ele retorna uma lista completa de posts armazenados no banco de dados.
-
-```http
-  GET URL/post/
-```
-
-- #####  PostController_searchPosts - Buscar postagens
-
-Este endpoint é utilizado para realizar uma pesquisa por posts com base em um critério específico (título ou conteúdo).
-
-```http
-  GET URL/post/search/id
-```
-
-- ##### PostController_getPostById - Obter postagem específica
-
-Este endpoint é utilizado para recuperar uma postagem específica com base no ID fornecido.
-
-```http
-  GET URL/post/id
-```
-
-- ##### PostController_createPost - Criar nova postagem
-
-Este endpoint é utilizado para criar uma nova postagem no blog.
-
-```http
-  POST URL/post
-```
-
-- ##### PostController_updatePost - Editar postagem existente
-
-Este endpoint é utilizado para editar uma postagem existente, fornecendo o ID da postagem a ser atualizada.
-
-```http
-  PUT URL/post/id
-```
-
-- ##### PostController_deletePost - Excluir postagem
-
-Este endpoint é utilizado para excluir uma postagem do blog.
-
-```http
-  DELETE URL/post/id
-```
 ## 🎥 Vídeo do Projeto
 👉 **[Link para o vídeo](https://youtu.be/ILa9iL7bAOs)**  
 
 ## 📜 Conclusão
 
-A refatoração do back-end do Blog Post trouxe melhorias significativas, tornando o sistema mais moderno, escalável e fácil de manter. A migração da plataforma OutSystems para uma arquitetura baseada em NestJS, REST APIs e MongoDB foi um grande avanço, proporcionando mais flexibilidade e controle no desenvolvimento.
+Este projeto proporcionou a oportunidade de aprimorar habilidades no desenvolvimento front-end, utilizando tecnologias modernas e poderosas como React.js, NextJS, Axios, TailwindCSS e Styled-components. Ao longo do desenvolvimento, foi possível criar uma interface gráfica dinâmica, responsiva e intuitiva para a aplicação de blog, que se conecta de forma eficiente com a API do back-end.
 
-O uso de Docker e GitHub facilitou o gerenciamento do código e a colaboração entre os desenvolvedores, além de garantir consistência nos diferentes ambientes. As APIs RESTful ajudaram a separar o front-end do back-end, o que trouxe agilidade e facilitou a integração com outras plataformas.
+A arquitetura adotada, baseada no padrão NextJS e no conceito de JAMstack, permitiu um desenvolvimento ágil, com foco em modularidade, escalabilidade e otimização de performance. A integração do Axios facilitou as requisições HTTP, enquanto o uso do TailwindCSS e Styled-components proporcionou uma experiência de design fluída e flexível, permitindo um controle preciso dos estilos.
 
-No entanto, o desenvolvimento não foi isento de desafios. A vinculação de várias tecnologias como Docker, MongoDB e Node.js exigiu um cuidado especial para garantir que todos os componentes funcionassem de forma integrada. A configuração do MongoDB e a criação de um ambiente Docker compatível com o sistema foram algumas das dificuldades encontradas, exigindo ajustes contínuos. Apesar desses desafios, a refatoração resultou em uma aplicação mais robusta e bem estruturada.
+O projeto também reforçou a importância de boas práticas de desenvolvimento, como controle de versão via GitHub, e integração de ferramentas de CI/CD para garantir a qualidade do código. A aplicação está pronta para ser utilizada por docentes e alunos, permitindo uma interação eficaz com os posts do blog, proporcionando um ambiente de leitura agradável e funcional.
 
-## Getting Started
+Com essa implementação, o projeto evolui para um sistema mais robusto, modular e de fácil manutenção, alinhado com as melhores práticas de desenvolvimento web modernas. Estamos confiantes de que essa solução trará uma excelente experiência para os usuários finais.
 
-First, run the development server:
+> [!CAUTION]
+> AJEITAR A CONCLUSÃO
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
