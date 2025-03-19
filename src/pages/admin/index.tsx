@@ -1,7 +1,7 @@
 "use client";import styled, { createGlobalStyle } from "styled-components";
 import Link from "next/link";
 import { Separator } from "@/app/components/Separator";
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Usando o novo useRouter do Next.js 13+
 import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
 
@@ -78,6 +78,8 @@ interface Post {
   author: string;
 }
 
+
+/*
 const Admin = () => {
   const authContext = useContext(AuthContext);
   const router = useRouter(); // Hook para redirecionamento
@@ -102,6 +104,60 @@ const Admin = () => {
   if (!authContext?.user) {
     return null;
   }
+*/
+
+const Admin = () => {
+  const authContext = useContext(AuthContext);
+  const router = useRouter(); // Hook para redirecionamento
+
+  const [posts, setPosts] = useState<Post[]>([]);
+
+  // Verifica se o usuário está autenticado
+  useEffect(() => {
+    if (!authContext?.user) {
+      router.push("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
+    } else {
+      // Carregar posts da API
+      const fetchPosts = async () => {
+        try {
+          const response = await fetch("https://blog-posts-hori.onrender.com/post");
+          if (!response.ok) throw new Error("Erro ao carregar os posts.");
+          const data = await response.json();
+          setPosts(data);
+        } catch (error) {
+          console.error("Erro ao buscar posts:", error);
+        }
+      };
+      fetchPosts();
+    }
+  }, [authContext, router]);
+
+  // Handle Delete Post
+  const handleDelete = async (id: number) => {
+    try {
+      // Envia a solicitação de exclusão
+      const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
+        method: "DELETE",
+      });
+
+      // Verifica se a resposta da API foi bem-sucedida
+      if (response.ok) {
+        console.log(`Post com id ${id} excluído com sucesso`);
+
+        // Atualiza a lista de posts sem o post excluído
+        setPosts((prevPosts) => prevPosts.filter(post => post.id !== id));
+      } else {
+        console.error("Erro ao excluir o post:", response.status, response.statusText);
+      }
+    } catch (error) {
+      console.error("Erro ao excluir post:", error);
+    }
+  };
+
+  // Se o usuário não estiver autenticado, não renderiza o conteúdo
+  if (!authContext?.user) {
+    return null;
+  }
 
   return (
     <>
@@ -112,8 +168,8 @@ const Admin = () => {
         </div>
 
         {/* Título em destaque */}
-        <Title></Title>
-        {mockPosts.map((post) => (
+        <Title>Lista de posts:</Title>
+        {posts.map((post) => (
           <PostItem key={post.id}>
             <span>
               {post.title} - {post.author}
