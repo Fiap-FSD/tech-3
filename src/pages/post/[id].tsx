@@ -1,10 +1,10 @@
-'use client';
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import styled from 'styled-components';
 
 // Estilização do container
 const Container = styled.div`
+  background-color: black;
   padding: 20px;
   max-width: 800px;
   margin: 100px auto;
