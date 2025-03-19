@@ -66,8 +66,11 @@ const Button = styled.button`
 
 interface PostData {
   title: string;
-  content: string;
   author: string;
+  intro: string;
+  content: string;
+  imageUrl: string,
+  videoUrl: string,
 }
 
 const PostEdit: React.FC = () => {
@@ -75,6 +78,9 @@ const PostEdit: React.FC = () => {
     title: 'Post Exemplo',
     content: 'Conteúdo editável aqui...',
     author: 'João',
+    intro: 'Introdução ao post',  // Inicializando o campo 'intro' corretamente
+    imageUrl: 'test',  // Inicializando o campo 'imageUrl'
+    videoUrl: 'test',  // Inicializando o campo 'videoUrl'
   });
 
   const router = useRouter();
@@ -82,7 +88,15 @@ const PostEdit: React.FC = () => {
 
   useEffect(() => {
     if (id) {
-      const fetchedPost = { title: `Post ${id}`, content: `Conteúdo editável do post ${id}`, author: 'Autor' };
+      // Simulando a busca de um post com base no 'id'
+      const fetchedPost = { 
+        title: `Post ${id}`, 
+        content: `Conteúdo editável do post ${id}`, 
+        author: 'Autor', 
+        intro: `Introdução do post ${id}`,  // Garantir que 'intro' seja preenchido
+        imageUrl: 'https://exemplo.com/imagem.jpg', 
+        videoUrl: 'https://exemplo.com/video.mp4',
+      };
       setPost(fetchedPost);
     }
   }, [id]);
@@ -105,6 +119,7 @@ const PostEdit: React.FC = () => {
             setPost({ ...post, title: e.target.value })
           }
         />
+
         <Textarea
           placeholder="Conteúdo"
           value={post.content}
@@ -120,7 +135,34 @@ const PostEdit: React.FC = () => {
             setPost({ ...post, author: e.target.value })
           }
         />
-        <Button type="submit">Salvar Alterações</Button>
+
+        <Input
+          type="text"
+          placeholder="Introdução"
+          value={post.intro}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPost({ ...post, intro: e.target.value })
+          }
+        />
+
+        <Input
+          type="text"
+          placeholder="Link Imagem"
+          value={post.imageUrl}  // Corrigido para usar 'imageUrl'
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPost({ ...post, imageUrl: e.target.value })
+          }
+        />
+
+        <Input
+          type="text"
+          placeholder="Link Video"
+          value={post.videoUrl}  // Corrigido para usar 'videoUrl'
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPost({ ...post, videoUrl: e.target.value })
+          }
+        />
+        <Button type="submit">Salvar alterações</Button>
       </Form>
     </>
   );
