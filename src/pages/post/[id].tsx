@@ -24,22 +24,66 @@ const Author = styled.p`
   margin-bottom: 20px;
 `;
 
+const MediaContainer = styled.div`
+  margin-top: 20px;
+`;
+
+const Image = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  margin-bottom: 20px;
+`;
+
+const VideoThumbnail = styled.img`
+  width: 100%;
+  height: auto;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-bottom: 20px;
+`;
+
+const VideoDescription = styled.p`
+  font-size: 16px;
+  color: #ccc;
+  margin-top: 10px;
+`;
+
 const Content = styled.div`
   font-size: 16px;
   line-height: 1.5;
 `;
+
+// Componente para exibir o vídeo do YouTube
+const YoutubeVideo = ({ videoId }: { videoId: string }) => {
+  return (
+    <div className="aspect-w-16 aspect-h-9">
+      <iframe
+        className="w-full h-full"
+        src={`https://www.youtube.com/embed/${videoId}`}
+        title="YouTube video player"
+        frameBorder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+  );
+};
 
 interface Post {
   id: string;
   title: string;
   author: string;
   content: string;
+  imageUrl?: string;  
+  videoUrl?: string;  // URL youtube
 }
 
 const PostDetails = () => {
   const params = useParams(); // Obtém os parâmetros da URL
   const id = params?.id as string; // Garante que 'id' seja tratado como uma string
   const [post, setPost] = useState<Post | null>(null);
+  const [videoDetails, setVideoDetails] = useState<{ thumbnail: string; description: string } | null>(null);
 
   useEffect(() => {
     if (!id) return;
@@ -60,15 +104,69 @@ const PostDetails = () => {
     fetchPost();
   }, [id]);
 
+  useEffect(() => {
+    if (post?.videoUrl) {
+      // Função para extrair o ID do YouTube da URL
+      const extractYouTubeId = (url: string) => {
+        const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
+        const match = url.match(regExp);
+        return match ? match[1] : null;
+      };
+
+      const videoId = extractYouTubeId(post.videoUrl);
+
+      // Se o ID do vídeo for válido, buscar detalhes do vídeo
+      if (videoId) {
+        const fetchVideoDetails = async () => {
+          try {
+            const response = await fetch(
+              `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=YOUR_YOUTUBE_API_KEY&part=snippet`
+            );
+            if (!response.ok) {
+              throw new Error('Erro ao buscar detalhes do vídeo');
+            }
+            const data = await response.json();
+            const snippet = data.items[0]?.snippet;
+
+            if (snippet) {
+              setVideoDetails({
+                thumbnail: snippet.thumbnails.high.url,
+                description: snippet.description,
+              });
+            }
+          } catch (error) {
+            console.error('Erro ao buscar detalhes do vídeo:', error);
+          }
+        };
+
+        fetchVideoDetails();
+      }
+    }
+  }, [post]);
+
   if (!post) {
     return <Container>Carregando...</Container>;
   }
-
   return (
     <Container>
       <Title>{post.title}</Title>
       <Author>Autor: {post.author}</Author>
       <Content>{post.content}</Content>
+
+      {/* Condicional para exibir a imagem se existir */}
+      {post.imageUrl && (
+        <MediaContainer>
+          <Image src={post.imageUrl} alt="Imagem do post" />
+        </MediaContainer>
+      )}
+
+      {/* Condicional para exibir o vídeo do YouTube se existir */}
+      {post.videoUrl && (
+        <MediaContainer>
+          {/** Exibe o componente de vídeo do YouTube passando o ID extraído **/}
+          {<YoutubeVideo videoId={post.videoUrl}/>}
+        </MediaContainer>
+      )}
     </Container>
   );
 };
