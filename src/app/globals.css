@@ -1,3 +1,6 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 body {
   background-color: #000000; /* Fundo preto atualizado */
@@ -6,4 +9,4 @@ body {
   font-family: Arial, sans-serif;
 }
 
-@import "tailwindcss";
+/* @import "tailwindcss"; */

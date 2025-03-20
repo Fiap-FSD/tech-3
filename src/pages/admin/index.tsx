@@ -56,11 +56,11 @@ const Button = styled.button`
 
 // Botão Editar
 const EditButton = styled(Button)`
-  background-color: #007bff;
+  background-color:  #007bff;
   color: white;
   margin-right: 10px;
   &:hover {
-    background-color: #e0a800;
+    background-color: #005fc4;
   }
 `;
 
