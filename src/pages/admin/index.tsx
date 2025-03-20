@@ -4,7 +4,7 @@ import { Separator } from "@/app/components/Separator";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Usando o novo useRouter do Next.js 13+
 import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
-import Cookies from "js-cookie"; 
+import * as authUtils from "@/utils/authUtils"; // Importando todos os membros do utilitário de autenticação
 
 const HeaderHeight = "80px"; // Defina a altura do header
 
@@ -56,11 +56,11 @@ const Button = styled.button`
 
 // Botão Editar
 const EditButton = styled(Button)`
-  background-color: #007bff;
+  background-color:  #007bff;
   color: white;
   margin-right: 10px;
   &:hover {
-    background-color: #e0a800;
+    background-color: #005fc4;
   }
 `;
 
@@ -79,33 +79,6 @@ interface Post {
   author: string;
 }
 
-
-/*
-const Admin = () => {
-  const authContext = useContext(AuthContext);
-  const router = useRouter(); // Hook para redirecionamento
-
-  // Verifica se o usuário está autenticado
-  useEffect(() => {
-    if (!authContext?.user) {
-      router.push("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
-    }
-  }, [authContext, router]);
-
-  const mockPosts: Post[] = [
-    { id: 1, title: "Post 1", author: "João" },
-    { id: 2, title: "Post 2", author: "Maria" },
-  ];
-
-  const handleDelete = (id: number) => {
-    console.log("Deletar post:", id);
-  };
-
-  // Se o usuário não estiver autenticado, não renderiza o conteúdo
-  if (!authContext?.user) {
-    return null;
-  }
-*/
 
 const Admin = () => {
   const authContext = useContext(AuthContext);
@@ -141,7 +114,7 @@ const Admin = () => {
 
   // Handle Delete Post
   const handleDelete = async (id: number) => {
-    const token = Cookies.get("token"); // Obtém o token do cookie
+    const token = authUtils.getAuthToken(); // Obtém o token do cookie
 
     if (!token) {
       alert("Token inválido ou ausente. Faça login novamente.");

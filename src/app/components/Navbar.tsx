@@ -56,10 +56,6 @@ const Logo = styled(Link)`
   margin-right: 2rem;
 `;
 
-const AuthContainer = styled.div`
-  color: white;
-`;
-
 const LogoutButton = styled.button`
   background-color: transparent;
   border: 1px solid white;
@@ -80,11 +76,6 @@ const NavRight = styled.div`
   margin-left: auto; /* Move o botão para o canto direito */
 `;
 
-// Estilizando o conteúdo da página, com o padding-top para compensar o Header fixo
-const MainContent = styled.main`
-  padding-top: 80px; // Tamanho do Header para empurrar o conteúdo para baixo
-`;
-
 export default function Navbar() {
   const authContext = useContext(AuthContext);
   const logout = authContext?.logout;
@@ -95,11 +86,11 @@ export default function Navbar() {
       <Header>
         <HeaderContent>
           <div className="flex items-center">
-            <Logo href="/">FIAP</Logo>
+            <Logo href="/">Home</Logo>
           </div>
 
           <Nav>
-            <NavLink href="/">Home</NavLink>
+            {/* <NavLink href="/">Home</NavLink> */}
             <NavLink href="/create">Criar Post</NavLink>
             <NavLink href="/admin">Admin</NavLink>
             {!user && <NavLink href="/login">Login</NavLink>}

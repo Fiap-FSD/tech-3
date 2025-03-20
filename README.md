@@ -28,7 +28,7 @@ A equipe utilizou as seguintes ferramentas durante o desenvolvimento do projeto:
 
 - **Styled-components**: Biblioteca que permite escrever CSS dentro de componentes React, criando componentes de estilo com escopo isolado. Utilizamos o Styled-components para garantir uma estilização modular, reutilizável e de fácil manutenção, além de evitar conflitos de estilo entre diferentes partes da aplicação.
 
--**JWT (JSON Web Token)**: Utilizado para autenticação e autorização de usuários. O JWT é um token seguro transmitido entre o cliente e o servidor, permitindo que o usuário acesse áreas protegidas com base na autenticação bem-sucedida.
+- **JWT (JSON Web Token)**: Utilizado para autenticação e autorização de usuários. O JWT é um token seguro transmitido entre o cliente e o servidor, permitindo que o usuário acesse áreas protegidas com base na autenticação bem-sucedida.
 
 - **js-cookie**: Biblioteca utilizada para manipulação de cookies no lado do cliente. Foi utilizada para armazenar e recuperar o token JWT de maneira eficiente, garantindo que o estado de autenticação fosse mantido durante a navegação.
 
@@ -63,7 +63,6 @@ src/
     layout.tsx       Layout principal da aplicação
     page.css         Estilos específicos da página
     page.tsx         Página principal (Home)
-    _app.tsx         Componente principal da aplicação
   pages/
     admin/
       index.tsx      Página administrativa
@@ -75,6 +74,7 @@ src/
       index.tsx      Página de login
     post/
       [id].tsx       Página de detalhes do post (roteamento dinâmico)
+    _app.tsx         Componente principal da aplicação
 package.json
 ```
 
@@ -166,3 +166,5 @@ Com essa implementação, o projeto evolui para um sistema mais robusto, modular
 
 > [!CAUTION]
 > AJEITAR A CONCLUSÃO
+> Trocar o link para o vídeo de apresentação
+> Retirar Configuração do ambiente, não estamos utilizando

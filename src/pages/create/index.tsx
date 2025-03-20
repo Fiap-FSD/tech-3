@@ -3,7 +3,8 @@ import { useContext, useEffect, useState } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
 import { useRouter } from "next/router";
-import Cookies from "js-cookie"; // Importando o js-cookie para obter o token
+import { extractYouTubeId } from '@/utils/extractYouTubeId';
+import * as authUtils from "@/utils/authUtils";
 
 const HeaderHeight = "80px";
 
@@ -102,17 +103,10 @@ const PostCreate = () => {
     }
   }, [authContext, router]);
 
-  // Função para extrair o ID do YouTube da URL
-  const extractYouTubeId = (url: string) => {
-    const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
-    const match = url.match(regExp);
-    return match ? match[1] : url; // Retorna o ID se encontrado, caso contrário, retorna a URL original
-  };
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const token = Cookies.get("token"); // Obtém o token do cookie
+    const token = authUtils.getAuthToken(); // Obtém o token do cookie
 
     if (!token) {
       alert("Token inválido ou ausente. Faça login novamente.");
@@ -125,7 +119,7 @@ const PostCreate = () => {
       intro: post.intro,
       content: post.content,
       imageUrl: post.imagem,
-      videoUrl: extractYouTubeId(post.video), // Extrai apenas o ID do vídeo
+      videoUrl: extractYouTubeId(post.video) || '', // Usa a função utilitária
     };
 
     try {
@@ -141,17 +135,12 @@ const PostCreate = () => {
         }
       );
 
-      // if (!response.ok) {
-      //   throw new Error(`Erro ao criar o post: ${response.statusText}`);
-      // }
-
       // Verifica se a resposta contém um corpo antes de chamar response.json()
       let data = null;
       const contentType = response.headers.get("Content-Type");
       if (contentType && contentType.includes("application/json")) {
         data = await response.json();
       }
-
       console.log("Post criado com sucesso:", data);
       alert("Post criado com sucesso!");
       router.push("/"); // Redireciona para a página inicial após criar o post
@@ -224,7 +213,7 @@ const PostCreate = () => {
           placeholder="Link Video"
           value={post.video}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPost({ ...post, video: extractYouTubeId(e.target.value) }) // Extrai o ID ao alterar o valor
+            setPost({ ...post, video: extractYouTubeId(e.target.value) || "" }) // Extrai o ID ao alterar o valor
           }
         />
         <Button type="submit">Criar Post</Button>

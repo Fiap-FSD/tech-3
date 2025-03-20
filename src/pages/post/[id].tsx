@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import styled from 'styled-components';
+import { extractYouTubeId } from '@/utils/extractYouTubeId';
 
 // Estilização do container
 const Container = styled.div`
@@ -35,29 +36,30 @@ const Image = styled.img`
   margin-bottom: 20px;
 `;
 
-const VideoThumbnail = styled.img`
-  width: 100%;
-  height: auto;
-  border-radius: 5px;
-  cursor: pointer;
-  margin-bottom: 20px;
-`;
-
-const VideoDescription = styled.p`
-  font-size: 16px;
-  color: #ccc;
-  margin-top: 10px;
-`;
-
 const Content = styled.div`
   font-size: 16px;
   line-height: 1.5;
 `;
 
+const StyledVideoContainer = styled.div`
+  position: relative;
+  width: 100%;
+  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+
+  iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 5px;
+  }
+`;
+
 // Componente para exibir o vídeo do YouTube
 const YoutubeVideo = ({ videoId }: { videoId: string }) => {
   return (
-    <div className="aspect-w-16 aspect-h-9">
+    <StyledVideoContainer>
       <iframe
         className="w-full h-full"
         src={`https://www.youtube.com/embed/${videoId}`}
@@ -66,7 +68,7 @@ const YoutubeVideo = ({ videoId }: { videoId: string }) => {
         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
         allowFullScreen
       />
-    </div>
+    </StyledVideoContainer>
   );
 };
 
@@ -91,9 +93,6 @@ const PostDetails = () => {
     const fetchPost = async () => {
       try {
         const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`);
-        // if (!response.ok) {
-        //   throw new Error(`Erro ao buscar o post com ID ${id}: ${response.statusText}`);
-        // }
         const data = await response.json();
         setPost(data);
       } catch (error) {
@@ -106,25 +105,15 @@ const PostDetails = () => {
 
   useEffect(() => {
     if (post?.videoUrl) {
-      // Função para extrair o ID do YouTube da URL
-      const extractYouTubeId = (url: string) => {
-        const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
-        const match = url.match(regExp);
-        return match ? match[1] : null;
-      };
-
       const videoId = extractYouTubeId(post.videoUrl);
 
-      // Se o ID do vídeo for válido, buscar detalhes do vídeo
+       // Se o ID do vídeo for válido, buscar detalhes do vídeo
       if (videoId) {
         const fetchVideoDetails = async () => {
           try {
             const response = await fetch(
               `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=YOUR_YOUTUBE_API_KEY&part=snippet`
             );
-            // if (!response.ok) {
-            //   throw new Error('Erro ao buscar detalhes do vídeo');
-            // }
             const data = await response.json();
             const snippet = data.items[0]?.snippet;
 
