@@ -72,7 +72,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    authUtils.removeAuthToken(); // Remove o token do cookie
+    Object.keys(Cookies.get()).forEach((cookie) => {
+      Cookies.remove(cookie);
+    });
+  
     setUser(null);
     router.push('/login');
   };
