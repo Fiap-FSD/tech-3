@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+'use client';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const Form = styled.form`
@@ -37,7 +38,7 @@ interface Credentials {
   password: string;
 }
 
-const Login: React.FC = () => {
+const Login = () => {
   const [credentials, setCredentials] = useState<Credentials>({
     username: '',
     password: '',

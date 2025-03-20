@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+'use client';
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const Form = styled.form`
@@ -27,14 +28,14 @@ const Textarea = styled.textarea`
 
 const Button = styled.button`
   padding: 10px;
-  background-color: #28a745;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
   &:hover {
-    background-color: #218838;
+    background-color: #0056b3;
   }
 `;
 
@@ -44,16 +45,12 @@ interface PostData {
   author: string;
 }
 
-const PostEdit: React.FC = () => {
-  const [post, setPost] = useState<PostData>({
-    title: 'Post Exemplo',
-    content: 'Conteúdo editável aqui...',
-    author: 'João',
-  });
+const PostCreate = () => {
+  const [post, setPost] = useState<PostData>({ title: '', content: '', author: '' });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Post editado:', post);
+    console.log('Post criado:', post);
   };
 
   return (
@@ -81,9 +78,9 @@ const PostEdit: React.FC = () => {
           setPost({ ...post, author: e.target.value })
         }
       />
-      <Button type="submit">Salvar Alterações</Button>
+      <Button type="submit">Criar Post</Button>
     </Form>
   );
 };
 
-export default PostEdit;
+export default PostCreate;

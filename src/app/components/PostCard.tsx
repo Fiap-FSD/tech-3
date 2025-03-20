@@ -1,6 +1,6 @@
-import React from 'react';
+'use client';
 import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import Link from 'next/link';
 
 const Card = styled.div`
   border: 1px solid #ddd;
@@ -49,13 +49,13 @@ interface PostCardProps {
   post: Post;
 }
 
-const PostCard: React.FC<PostCardProps> = ({ post }) => {
+const PostCard = ({ post }: PostCardProps) => {
   return (
     <Card>
       <Title>{post.title}</Title>
       <Author>Autor: {post.author}</Author>
       <Description>{post.description}</Description>
-      <ReadMore to={`/post/${post.id}`}>Ler mais</ReadMore>
+      <ReadMore href={`/post/${post.id}`}>Ler mais</ReadMore>
     </Card>
   );
 };
