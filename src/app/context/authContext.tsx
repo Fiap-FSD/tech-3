@@ -35,16 +35,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await axios.post('https://blog-posts-hori.onrender.com/auth/login', credentials);
 
       if (response.data.access_token) {
-        // Cookies.set('token', response.data.access_token, { expires: 7 });
         authUtils.setAuthToken(response.data.access_token); // Define o token no cookie
 
-
-        // Decodifica o token para extrair as informações do usuário
         const decodedToken: any = jwtDecode(response.data.access_token);
 
         const user = {
           id: decodedToken.sub,
-          name: decodedToken.name || 'Unknown', // Ensure 'name' is included
+          name: decodedToken.name || 'Unknown',
           email: decodedToken.email,
           role: decodedToken.role,
         };
@@ -53,18 +50,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           setUser(user);
           router.push(user.role === 'admin' ? '/admin' : '/create');
         } else {
-          console.error('Dados do usuário estão incompletos ou ausentes:', user); // Log detalhado
-          setUser(null); // Garante que o estado do usuário seja limpo
+          console.error('Dados do usuário estão incompletos ou ausentes:', user);
+          setUser(null);
           alert('Erro: Dados do usuário estão incompletos ou ausentes. Por favor, tente novamente mais tarde.');
         }
       } else {
-        console.error('Token de acesso não encontrado na resposta:', response.data); // Log detalhado
-        // throw new Error('Token de acesso não encontrado na resposta.');
+        console.error('Token de acesso não encontrado na resposta:', response.data);
       }
-    } catch (error) {
-      console.error('Erro no login:', error);
+    } catch (error: any) {
+      console.error('Erro no login:', error.message); // Apenas loga o erro no console
       alert('Erro ao realizar login. Por favor, verifique suas credenciais ou tente novamente mais tarde.');
-      // throw error;
     }
   };
 
