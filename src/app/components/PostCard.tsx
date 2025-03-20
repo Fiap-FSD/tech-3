@@ -5,42 +5,42 @@ import { useState } from 'react';
 
 // Estilizando o Card
 const Card = styled.div`
-  border: 1px solid #555; /* Ajuste da borda para uma cor mais escura */
+  border: 1px solid #555;
   padding: 15px;
   margin-bottom: 10px;
   border-radius: 5px;
-  background-color: #333; /* Fundo escuro para o card */
-  color: white; /* Cor do texto dentro do card */
+  background-color: #333;
+  color: white;
   transition: box-shadow 0.2s;
   &:hover {
-    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); /* Efeito de hover com sombra mais leve */
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1);
   }
 `;
 
 const Title = styled.h2`
   font-size: 20px;
   margin: 0 0 10px;
-  color: white; /* Cor do título em branco */
+  color: white;
 `;
 
 const Author = styled.p`
   font-size: 14px;
-  color: #aaa; /* Cor do texto do autor em cinza claro */
+  color: #aaa;
   margin: 0;
 `;
 
 const Description = styled.p`
   font-size: 16px;
   margin: 10px 0;
-  color: white; /* Cor do texto da descrição em branco */
+  color: white;
 `;
 
 const ReadMore = styled(Link)`
-  color: #007bff; /* Cor do link em azul */
+  color: #007bff;
   text-decoration: none;
   &:hover {
     text-decoration: underline;
-    color: #0056b3; /* Cor do link ao passar o mouse */
+    color: #0056b3;
   }
 `;
 
@@ -62,19 +62,44 @@ const PostCard = ({ post }: PostCardProps) => {
     try {
       const response = await fetch(`https://blog-posts-hori.onrender.com/post/${post.id}`);
       if (!response.ok) {
-        throw new Error(`Erro ao buscar o post com ID ${post.id}: ${response.statusText}`);
+        // throw new Error(`Erro ao buscar o post com ID ${post.id}: ${response.statusText}`);
       }
       const data = await response.json();
-      setPostDetails(data); // Atualiza os detalhes do post
+      setPostDetails(data);
     } catch (error) {
       console.error('Erro ao buscar os detalhes do post:', error);
+    }
+  };
+
+  const handleDelete = async (id: number) => {
+    console.log("ID >>>>>>", id); // Log para verificar o valor do ID
+    if (!id) {
+      console.error("ID do post está indefinido.");
+      alert("Erro: Não foi possível excluir o post. ID inválido.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
+        method: "DELETE",
+      });
+
+      // if (!response.ok) {
+      //   throw new Error(`Erro ao excluir o post com ID ${id}: ${response.statusText}`);
+      // }
+
+      alert("Post excluído com sucesso!");
+      console.log(`Post com ID ${id} excluído com sucesso`);
+      // Atualize a lista de posts ou redirecione, se necessário
+    } catch (error) {
+      console.error("Erro ao excluir o post:", error);
+      alert("Erro ao excluir o post. Tente novamente.");
     }
   };
 
   return (
     <Card>
       {postDetails ? (
-        // Renderiza os detalhes do post
         <>
           <Title>{postDetails.title}</Title>
           <Author>Autor: {postDetails.author}</Author>
@@ -84,12 +109,11 @@ const PostCard = ({ post }: PostCardProps) => {
           </ReadMore>
         </>
       ) : (
-        // Renderiza o resumo do post
         <>
           <Title>{post.title}</Title>
           <Author>Autor: {post.author}</Author>
           <Description>{post.description}</Description>
-          <ReadMore href={`/post/${post.id}`}>Ler mais</ReadMore> {/* Certifique-se de que o ID está correto */}
+          <ReadMore href={`/post/${post.id}`}>Ler mais</ReadMore>
         </>
       )}
     </Card>

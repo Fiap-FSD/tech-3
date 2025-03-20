@@ -101,6 +101,13 @@ const PostCreate = () => {
     }
   }, [authContext, router]);
 
+  // Função para extrair o ID do YouTube da URL
+  const extractYouTubeId = (url: string) => {
+    const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
+    const match = url.match(regExp);
+    return match ? match[1] : url; // Retorna o ID se encontrado, caso contrário, retorna a URL original
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -117,7 +124,7 @@ const PostCreate = () => {
       intro: post.intro,
       content: post.content,
       imageUrl: post.imagem,
-      videoUrl: post.video,
+      videoUrl: extractYouTubeId(post.video), // Extrai apenas o ID do vídeo
     };
 
     try {
@@ -133,9 +140,9 @@ const PostCreate = () => {
         }
       );
 
-      if (!response.ok) {
-        throw new Error(`Erro ao criar o post: ${response.statusText}`);
-      }
+      // if (!response.ok) {
+      //   throw new Error(`Erro ao criar o post: ${response.statusText}`);
+      // }
 
       // Verifica se a resposta contém um corpo antes de chamar response.json()
       let data = null;
@@ -216,7 +223,7 @@ const PostCreate = () => {
           placeholder="Link Video"
           value={post.video}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPost({ ...post, video: e.target.value })
+            setPost({ ...post, video: extractYouTubeId(e.target.value) }) // Extrai o ID ao alterar o valor
           }
         />
         <Button type="submit">Criar Post</Button>

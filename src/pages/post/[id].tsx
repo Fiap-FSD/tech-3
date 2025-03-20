@@ -91,9 +91,9 @@ const PostDetails = () => {
     const fetchPost = async () => {
       try {
         const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`);
-        if (!response.ok) {
-          throw new Error(`Erro ao buscar o post com ID ${id}: ${response.statusText}`);
-        }
+        // if (!response.ok) {
+        //   throw new Error(`Erro ao buscar o post com ID ${id}: ${response.statusText}`);
+        // }
         const data = await response.json();
         setPost(data);
       } catch (error) {
@@ -122,9 +122,9 @@ const PostDetails = () => {
             const response = await fetch(
               `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=YOUR_YOUTUBE_API_KEY&part=snippet`
             );
-            if (!response.ok) {
-              throw new Error('Erro ao buscar detalhes do vídeo');
-            }
+            // if (!response.ok) {
+            //   throw new Error('Erro ao buscar detalhes do vídeo');
+            // }
             const data = await response.json();
             const snippet = data.items[0]?.snippet;
 

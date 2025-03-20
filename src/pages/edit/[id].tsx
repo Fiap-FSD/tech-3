@@ -1,6 +1,7 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
+import Cookies from "js-cookie"; // Importando o js-cookie para obter o token
 
 const HeaderHeight = '120px'; // Aumentando o valor para criar mais espaço
 
@@ -86,24 +87,77 @@ const PostEdit: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const extractYouTubeId = (url: string) => {
+    const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
+    const match = url.match(regExp);
+    return match ? match[1] : url; // Retorna o ID se encontrado, caso contrário, retorna a URL original
+  };
+
   useEffect(() => {
     if (id) {
-      // Simulando a busca de um post com base no 'id'
-      const fetchedPost = { 
-        title: `Post ${id}`, 
-        content: `Conteúdo editável do post ${id}`, 
-        author: 'Autor', 
-        intro: `Introdução do post ${id}`,  // Garantir que 'intro' seja preenchido
-        imageUrl: 'https://exemplo.com/imagem.jpg', 
-        videoUrl: 'https://exemplo.com/video.mp4',
+
+      const fetchPost = async () => {
+        try {
+          const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`);
+          // if (!response.ok) {
+          //   throw new Error(`Erro ao buscar o post com ID ${id}: ${response.statusText}`);
+          // }
+          const fetchedPost = await response.json();
+          setPost({
+            title: fetchedPost.title,
+            content: fetchedPost.content,
+            author: fetchedPost.author,
+            intro: fetchedPost.intro || '', // Garante que 'intro' seja preenchido
+            imageUrl: fetchedPost.imageUrl || '', // Garante que 'imageUrl' seja preenchido
+            // videoUrl: fetchedPost.videoUrl || '', // Garante que 'videoUrl' seja preenchido
+            videoUrl: extractYouTubeId(fetchedPost.videoUrl), // Extrai apenas o ID do vídeo
+          });
+        } catch (error) {
+          console.error('Erro ao buscar os detalhes do post:', error);
+        }
       };
-      setPost(fetchedPost);
+
+      fetchPost();
     }
   }, [id]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Post editado:', post);
+
+    if (!id) {
+      alert('ID do post não encontrado.');
+      return;
+    }
+
+    const token = Cookies.get("token"); // Obtém o token do cookie
+
+    if (!token) {
+      alert("Token inválido ou ausente. Faça login novamente.");
+      return;
+    }
+
+    try {
+      const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
+        method: 'PUT', // Método PUT para atualizar o post
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho
+        },
+        body: JSON.stringify(post), // Envia os dados atualizados como JSON
+      });
+
+      // if (!response.ok) {
+      //   throw new Error(`Erro ao atualizar o post com ID ${id}: ${response.statusText}`);
+      // }
+
+      const updatedPost = await response.json();
+      console.log('Post atualizado com sucesso:', updatedPost);
+      alert('Post atualizado com sucesso!');
+      router.push('/'); // Redireciona para a página inicial após a atualização
+    } catch (error) {
+      console.error('Erro ao atualizar o post:', error);
+      alert('Erro ao atualizar o post. Tente novamente.');
+    }
   };
 
   return (
@@ -159,7 +213,7 @@ const PostEdit: React.FC = () => {
           placeholder="Link Video"
           value={post.videoUrl}  // Corrigido para usar 'videoUrl'
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPost({ ...post, videoUrl: e.target.value })
+            setPost({ ...post, videoUrl: extractYouTubeId(e.target.value) }) // Extrai o ID ao alterar o valor
           }
         />
         <Button type="submit">Salvar alterações</Button>

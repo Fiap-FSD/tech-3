@@ -59,12 +59,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         }
       } else {
         console.error('Token de acesso não encontrado na resposta:', response.data); // Log detalhado
-        throw new Error('Token de acesso não encontrado na resposta.');
+        // throw new Error('Token de acesso não encontrado na resposta.');
       }
     } catch (error) {
       console.error('Erro no login:', error);
       alert('Erro ao realizar login. Por favor, verifique suas credenciais ou tente novamente mais tarde.');
-      throw error;
+      // throw error;
     }
   };
 

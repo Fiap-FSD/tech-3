@@ -4,6 +4,7 @@ import { Separator } from "@/app/components/Separator";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Usando o novo useRouter do Next.js 13+
 import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
+import Cookies from "js-cookie"; 
 
 const HeaderHeight = "80px"; // Defina a altura do header
 
@@ -120,12 +121,18 @@ const Admin = () => {
       // Carregar posts da API
       const fetchPosts = async () => {
         try {
-          const response = await fetch("https://blog-posts-hori.onrender.com/post");
-          if (!response.ok) throw new Error("Erro ao carregar os posts.");
+          const response = await fetch('https://blog-posts-hori.onrender.com/post'); // Chamada à API
           const data = await response.json();
-          setPosts(data);
+          const mappedPosts = data.map((post: any) => ({
+            id: post._id, // Mapeia _id para id
+            title: post.title,
+            author: post.author,
+            description: post.intro, // Usa intro como descrição
+            ...post, // Inclui outras propriedades, se necessário
+          }));
+          setPosts(mappedPosts); // Atualiza o estado com os dados mapeados
         } catch (error) {
-          console.error("Erro ao buscar posts:", error);
+          console.error('Erro ao buscar os posts:', error);
         }
       };
       fetchPosts();
@@ -134,10 +141,21 @@ const Admin = () => {
 
   // Handle Delete Post
   const handleDelete = async (id: number) => {
+    const token = Cookies.get("token"); // Obtém o token do cookie
+
+    if (!token) {
+      alert("Token inválido ou ausente. Faça login novamente.");
+      return;
+    }
     try {
+      console.log("ID >>>>>>", id);
       // Envia a solicitação de exclusão
       const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
         method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho
+        }
       });
 
       // Verifica se a resposta da API foi bem-sucedida
