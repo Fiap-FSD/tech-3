@@ -1,5 +1,5 @@
 import Navbar from "./components/Navbar";
-import StyledComponentsRegistry from "@/app/StyledComponentsRegistry";
+import StyledComponentsRegistry from "@/app/register/StyledComponentsRegistry";
 import type { Metadata } from "next";
 import "./globals.css";
 
