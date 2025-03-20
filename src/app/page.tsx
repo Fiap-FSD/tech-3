@@ -1,7 +1,19 @@
 'use client';
 import { useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
 import PostCard from './components/PostCard';
+import Navbar from './components/Navbar';
+import { Hero } from './components/Hero';
+
+// Estilizando o fundo global da página
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: black; /* Fundo preto */
+    color: white; /* Texto branco */
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+`;
 
 const Container = styled.div`
   padding: 20px;
@@ -12,13 +24,30 @@ const Container = styled.div`
   }
 `;
 
+
+
 const SearchInput = styled.input`
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
+  border: 1px solid #555; /* Ajuste da borda para uma cor mais escura */
+  padding: 15px;
+  margin-bottom: 10px;
+  margin-left: auto; /* Centraliza à esquerda */
+  margin-right: auto; /* Centraliza à direita */
+  display: block; /* Faz com que o campo seja um bloco para que os margens automáticos funcionem */
   border-radius: 5px;
-  font-size: 16px;
+  background-color: #333; /* Fundo escuro para o card */
+  color: white; /* Cor do texto dentro do card */
+  transition: box-shadow 0.2s;
+
+  /* A largura total do campo será 100% menos as margens */
+  width: calc(100% - 800px); /* Calcula a largura da caixa de texto subtraindo a margem total de 40px (20px de cada lado) */
+
+  &:hover {
+    box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); 
+}
+`;
+
+const MainContent = styled.main`
+  padding-top: 80px;  // A altura do Header fixo
 `;
 
 interface Post {
@@ -39,17 +68,35 @@ export default function Home() {
     post.title.toLowerCase().includes(search.toLowerCase())
   );
 
-  return  (
-    <Container>
-      <SearchInput
-        type="text"
-        placeholder="Buscar posts..."
-        value={search}
-        onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)}
-      />
-      {filteredPosts.map((post) => (
-        <PostCard key={post.id} post={post} />
-      ))}
-    </Container>
+  return (
+    <>
+      {/* Aplica o estilo global */}
+      <GlobalStyle />
+
+      {/* Navbar (Header) será fixo no topo */}
+      <Navbar />
+
+      {/* Conteúdo da página */}
+      <MainContent>
+        <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:flex-col lg:min-h-screen">
+          <Hero />
+          <div className="mx-auto max-w-3xl text-center">
+            {/* Campo de pesquisa */}
+            <SearchInput
+              type="text"
+              placeholder="Pesquisar por post..."
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+            />
+          </div>
+
+          <Container>
+            {filteredPosts.map((post) => (
+              <PostCard key={post.id} post={post} />
+            ))}
+          </Container>
+        </div>
+      </MainContent>
+    </>
   );
 }

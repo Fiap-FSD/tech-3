@@ -1,30 +1,46 @@
+import { Separator } from '@/Components/Separator';
 import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import styled, { createGlobalStyle } from 'styled-components';
+
+// Estilizando o fundo global da página
+const GlobalStyle = createGlobalStyle`
+  body {
+    background-color: black; /* Fundo preto */
+    color: white; /* Texto branco */
+    margin: 0;
+    font-family: Arial, sans-serif;
+  }
+`;
 
 const Container = styled.div`
-  padding: 20px;
+  padding: 100px 20px 20px; /* Adiciona espaço no topo para não sobrepor o header */
   max-width: 800px;
   margin: 0 auto;
+  background-color: #222; /* Cor escura para o fundo do conteúdo */
+  border-radius: 5px;
+
   @media (max-width: 600px) {
-    padding: 10px;
+    padding: 10px 10px 10px; /* Ajuste para telas menores */
   }
 `;
 
 const Title = styled.h1`
   font-size: 28px;
   margin-bottom: 10px;
+  color: white; /* Título branco */
 `;
 
 const Author = styled.p`
   font-size: 16px;
-  color: #666;
+  color: #ccc; /* Autor com cor cinza claro */
   margin-bottom: 20px;
 `;
 
 const Content = styled.div`
   font-size: 18px;
   line-height: 1.6;
+  color: white; /* Texto do conteúdo em branco */
 `;
 
 interface PostData {
@@ -33,10 +49,8 @@ interface PostData {
   author: string;
 }
 
-
 const PostView = () => {
-
-   const [mockPost, setMockPost] = useState<PostData>({
+  const [mockPost, setMockPost] = useState<PostData>({
     title: '',
     author: '',
     content: '',
@@ -45,19 +59,22 @@ const PostView = () => {
   const router = useRouter();
   const { id } = router.query;
 
-    useEffect(() => {
-      if (id) {
-        const fetchedPost = { title: `Post Exemplo de ${id}`, content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit... do post ${id}`, author: `Author do post ${id}` };
-        setMockPost(fetchedPost);
-      }
-    }, [id]);
+  useEffect(() => {
+    if (id) {
+      const fetchedPost = { title: `Post Exemplo de ${id}`, content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit... do post ${id}`, author: `Author do post ${id}` };
+      setMockPost(fetchedPost);
+    }
+  }, [id]);
 
   return (
-    <Container>
-      <Title>{mockPost.title}</Title>
-      <Author>Autor: {mockPost.author}</Author>
-      <Content>{mockPost.content}</Content>
-    </Container>
+    <>
+      <GlobalStyle /> {/* Aplica o estilo global */}
+      <Container>
+        <Title>{mockPost.title}</Title>
+        <Author>Autor: {mockPost.author}</Author>
+        <Content>{mockPost.content}</Content>
+      </Container>
+    </>
   );
 };
 

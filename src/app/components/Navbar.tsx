@@ -1,35 +1,85 @@
 'use client';
-import Link from "next/link";
-import styled from "styled-components";
+import styled from 'styled-components';
+import Link from 'next/link';
 
+// Estilizando o Header
 const Header = styled.header`
-  background-color: #007bff;
+  background-color: #1f2937;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 20;
   padding: 10px 20px;
-  color: white;
+  display: flex;
+  align-items: center;
+  height: 80px;
 `;
 
+// Container para o conteúdo do Header
+const HeaderContent = styled.div`
+  max-width: 1536px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  align-items: center;
+`;
+
+// Estilizando o Navbar
 const Nav = styled.nav`
   display: flex;
-  gap: 20px;
+  gap: 1.5rem;
+  margin-left: 0.5rem;
 `;
 
+// Estilizando os Links de Navegação
 const NavLink = styled(Link)`
-  color: white;
+  color: #ffffff;
   text-decoration: none;
+  font-size: 1rem;
   &:hover {
     text-decoration: underline;
   }
 `;
 
-const Navbar = () => (
-  <Header>
-    <Nav>
-      <NavLink href="/">Home</NavLink>
-      <NavLink href="/create">Criar Post</NavLink>
-      <NavLink href="/admin">Admin</NavLink>
-      <NavLink href="/login">Login</NavLink>
-    </Nav>
-  </Header>
-);
+// Logo com estilização
+const Logo = styled(Link)`
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 1.25rem;
+  color: #f3f4f6;
+  display: block;
+  margin-right: 2rem;
+`;
 
-export default Navbar;
+const AuthContainer = styled.div`
+  color: white;
+`;
+
+// Estilizando o conteúdo da página, com o padding-top para compensar o Header fixo
+const MainContent = styled.main`
+  padding-top: 80px;  // Tamanho do Header para empurrar o conteúdo para baixo
+`;
+
+export default function Navbar() {
+  return (
+    <>
+      <Header>
+        <HeaderContent>
+          <div className="flex items-center">
+            <Logo href="/">FIAP</Logo>
+          </div>
+
+          <Nav>
+            <NavLink href="/">Home</NavLink>
+            <NavLink href="/create">Criar Post</NavLink>
+            <NavLink href="/admin">Admin</NavLink>
+            <NavLink href="/login">Login</NavLink>
+          </Nav>
+        </HeaderContent>
+      </Header>
+      </>
+  );
+}
