@@ -138,7 +138,6 @@ const PostEdit: React.FC = () => {
       });
 
       const updatedPost = await response.json();
-      console.log('Post atualizado com sucesso:', updatedPost);
       alert('Post atualizado com sucesso!');
       router.push('/'); // Redireciona para a página inicial após a atualização
     } catch (error) {

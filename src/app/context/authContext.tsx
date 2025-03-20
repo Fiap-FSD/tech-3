@@ -34,8 +34,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     try {
       const response = await axios.post('https://blog-posts-hori.onrender.com/auth/login', credentials);
 
-      console.log('Resposta completa da API de login:', response.data); // Log para depuração
-
       if (response.data.access_token) {
         // Cookies.set('token', response.data.access_token, { expires: 7 });
         authUtils.setAuthToken(response.data.access_token); // Define o token no cookie
@@ -43,7 +41,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         // Decodifica o token para extrair as informações do usuário
         const decodedToken: any = jwtDecode(response.data.access_token);
-        console.log('Token decodificado:', decodedToken); // Log para depuração
 
         const user = {
           id: decodedToken.sub,
@@ -87,7 +84,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       try {
         // Decodifica o token para extrair as informações do usuário
         const decodedToken: any = jwtDecode(token);
-        console.log('Token decodificado no checkAuth:', decodedToken); // Log para depuração
 
         const user = {
           id: decodedToken.sub,
