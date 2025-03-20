@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import styled from 'styled-components';
+import { extractYouTubeId } from '@/utils/extractYouTubeId';
 
 // Estilização do container
 const Container = styled.div`
@@ -92,9 +93,6 @@ const PostDetails = () => {
     const fetchPost = async () => {
       try {
         const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`);
-        // if (!response.ok) {
-        //   throw new Error(`Erro ao buscar o post com ID ${id}: ${response.statusText}`);
-        // }
         const data = await response.json();
         setPost(data);
       } catch (error) {
@@ -107,25 +105,15 @@ const PostDetails = () => {
 
   useEffect(() => {
     if (post?.videoUrl) {
-      // Função para extrair o ID do YouTube da URL
-      const extractYouTubeId = (url: string) => {
-        const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
-        const match = url.match(regExp);
-        return match ? match[1] : null;
-      };
-
       const videoId = extractYouTubeId(post.videoUrl);
 
-      // Se o ID do vídeo for válido, buscar detalhes do vídeo
+       // Se o ID do vídeo for válido, buscar detalhes do vídeo
       if (videoId) {
         const fetchVideoDetails = async () => {
           try {
             const response = await fetch(
               `https://www.googleapis.com/youtube/v3/videos?id=${videoId}&key=YOUR_YOUTUBE_API_KEY&part=snippet`
             );
-            // if (!response.ok) {
-            //   throw new Error('Erro ao buscar detalhes do vídeo');
-            // }
             const data = await response.json();
             const snippet = data.items[0]?.snippet;
 

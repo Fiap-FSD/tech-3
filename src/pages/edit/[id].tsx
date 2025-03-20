@@ -1,7 +1,8 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
-import Cookies from "js-cookie"; // Importando o js-cookie para obter o token
+import { extractYouTubeId } from '@/utils/extractYouTubeId';
+import * as authUtils from "@/utils/authUtils";
 
 const HeaderHeight = '120px'; // Aumentando o valor para criar mais espaço
 
@@ -87,21 +88,12 @@ const PostEdit: React.FC = () => {
   const router = useRouter();
   const { id } = router.query;
 
-  const extractYouTubeId = (url: string) => {
-    const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
-    const match = url.match(regExp);
-    return match ? match[1] : url; // Retorna o ID se encontrado, caso contrário, retorna a URL original
-  };
-
   useEffect(() => {
     if (id) {
 
       const fetchPost = async () => {
         try {
           const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`);
-          // if (!response.ok) {
-          //   throw new Error(`Erro ao buscar o post com ID ${id}: ${response.statusText}`);
-          // }
           const fetchedPost = await response.json();
           setPost({
             title: fetchedPost.title,
@@ -109,8 +101,7 @@ const PostEdit: React.FC = () => {
             author: fetchedPost.author,
             intro: fetchedPost.intro || '', // Garante que 'intro' seja preenchido
             imageUrl: fetchedPost.imageUrl || '', // Garante que 'imageUrl' seja preenchido
-            // videoUrl: fetchedPost.videoUrl || '', // Garante que 'videoUrl' seja preenchido
-            videoUrl: extractYouTubeId(fetchedPost.videoUrl), // Extrai apenas o ID do vídeo
+            videoUrl: extractYouTubeId(fetchedPost.videoUrl) || '', // Usa a função utilitária
           });
         } catch (error) {
           console.error('Erro ao buscar os detalhes do post:', error);
@@ -129,7 +120,7 @@ const PostEdit: React.FC = () => {
       return;
     }
 
-    const token = Cookies.get("token"); // Obtém o token do cookie
+    const token = authUtils.getAuthToken(); // Obtém o token do cookie
 
     if (!token) {
       alert("Token inválido ou ausente. Faça login novamente.");
@@ -145,10 +136,6 @@ const PostEdit: React.FC = () => {
         },
         body: JSON.stringify(post), // Envia os dados atualizados como JSON
       });
-
-      // if (!response.ok) {
-      //   throw new Error(`Erro ao atualizar o post com ID ${id}: ${response.statusText}`);
-      // }
 
       const updatedPost = await response.json();
       console.log('Post atualizado com sucesso:', updatedPost);
@@ -213,7 +200,7 @@ const PostEdit: React.FC = () => {
           placeholder="Link Video"
           value={post.videoUrl}  // Corrigido para usar 'videoUrl'
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPost({ ...post, videoUrl: extractYouTubeId(e.target.value) }) // Extrai o ID ao alterar o valor
+            setPost({ ...post, videoUrl: extractYouTubeId(e.target.value) || '' }) // Extrai o ID ao alterar o valor ou usa string vazia
           }
         />
         <Button type="submit">Salvar alterações</Button>

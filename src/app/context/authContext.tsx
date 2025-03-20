@@ -4,6 +4,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { jwtDecode } from 'jwt-decode'; // Importa a biblioteca jwt-decode
+import * as authUtils from "@/utils/authUtils";
 
 // Define os tipos para o contexto
 interface User {
@@ -36,7 +37,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       console.log('Resposta completa da API de login:', response.data); // Log para depuração
 
       if (response.data.access_token) {
-        Cookies.set('token', response.data.access_token, { expires: 7 });
+        // Cookies.set('token', response.data.access_token, { expires: 7 });
+        authUtils.setAuthToken(response.data.access_token); // Define o token no cookie
+
 
         // Decodifica o token para extrair as informações do usuário
         const decodedToken: any = jwtDecode(response.data.access_token);
@@ -69,13 +72,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
-    Cookies.remove('access_token');
+    authUtils.removeAuthToken(); // Remove o token do cookie
     setUser(null);
     router.push('/login');
   };
 
   const checkAuth = async () => {
-    const token = Cookies.get('token'); // Obtém o token do cookie
+    const token = authUtils.getAuthToken(); // Cookies.get('token'); // Obtém o token do cookie
+     
     if (token) {
       try {
         // Decodifica o token para extrair as informações do usuário
@@ -92,7 +96,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(user); // Define o usuário no estado
       } catch (error) {
         console.error('Erro ao decodificar o token:', error);
-        Cookies.remove('token'); // Remove o token inválido
+        authUtils.removeAuthToken(); // Remove o token inválido
         setUser(null);
       }
     }
