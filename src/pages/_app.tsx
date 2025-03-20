@@ -1,12 +1,15 @@
-import { AppProps } from 'next/app';
-import '../app/globals.css';
-import Navbar from '@/app/components/Navbar';
+import { AuthProvider } from "@/app/context/authContext"; // Caminho corrigido para o AuthContext
+import { AppProps } from "next/app";
+import "../app/globals.css";
+import Navbar from "@/app/components/Navbar";
 
 function Pages({ Component, pageProps }: AppProps) {
   return (
     <>
-      <Navbar />
-      <Component {...pageProps} />
+      <AuthProvider>
+        <Navbar />
+        <Component {...pageProps} />
+      </AuthProvider>
     </>
   );
 }

@@ -1,7 +1,8 @@
-'use client';
-import { Separator } from '@/Components/Separator';
-import { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+"use client";import { Separator } from "@/app/components/Separator";
+import { useRouter } from "next/router";
+import { useState, useContext } from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import AuthContext from "@/app/context/authContext";
 
 // Estilo global para fundo preto e textos brancos
 const GlobalStyle = createGlobalStyle`
@@ -13,7 +14,7 @@ const GlobalStyle = createGlobalStyle`
   }
 `;
 
-const HeaderHeight = '80px'; // Aumentando o valor para criar mais espaço
+const HeaderHeight = "80px"; // Aumentando o valor para criar mais espaço
 
 const Form = styled.form`
   max-width: 600px;
@@ -57,39 +58,75 @@ const Button = styled.button`
   }
 `;
 
+const ErrorMessage = styled.p`
+  color: red;
+  text-align: center;
+`;
+
 interface Credentials {
-  username: string;
+  email: string;
   password: string;
 }
 
 const Login = () => {
   const [credentials, setCredentials] = useState<Credentials>({
-    username: '',
-    password: '',
+    email: "",
+    password: "",
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
+  const authContext = useContext(AuthContext); // Usando o AuthContext
+  const router = useRouter();
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Login:', credentials);
+    // Verifica se o authContext foi fornecido
+    if (!authContext) {
+      console.error("AuthContext não foi fornecido.");
+      return;
+    }
+
+    try {
+      // Tenta fazer login
+      await authContext.login(credentials);
+
+      // Verifica se o usuário foi autenticado
+      if (authContext.user) {
+        // Redireciona com base no papel (role) do usuário
+        if (authContext.user.role === "admin") {
+          router.push("/admin"); // Redireciona para /admin se for administrador
+        } else {
+          router.push("/create"); // Redireciona para /create se for usuário comum
+        }
+      } else {
+        // Se o usuário não existir, exibe uma mensagem de erro
+        setError("Usuário não encontrado. Verifique suas credenciais.");
+      }
+    } catch (error) {
+      console.error("Erro no login:", error);
+      setError("Erro ao fazer login. Tente novamente."); // Mensagem de erro genérica
+    }
   };
 
   return (
     <>
       <Container>
         <div>
-            <Separator text="Faça o seu Login" />
-          </div>
+          <Separator text="Faça o seu Login" />
+        </div>
       </Container>
 
       {/* Aplica o estilo global para o fundo preto e texto branco */}
       <GlobalStyle />
       <Form onSubmit={handleSubmit}>
+        {error && <ErrorMessage>{error}</ErrorMessage>}{" "}
+        {/* Exibe a mensagem de erro */}
         <Input
-          type="text"
-          placeholder="Usuário"
-          value={credentials.username}
+          type="email"
+          placeholder="Email"
+          value={credentials.email}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setCredentials({ ...credentials, username: e.target.value })
+            setCredentials({ ...credentials, email: e.target.value })
           }
         />
         <Input

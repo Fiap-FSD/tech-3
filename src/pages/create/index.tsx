@@ -1,9 +1,11 @@
-'use client';
-import { Separator } from '@/Components/Separator';
-import { useState } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+"use client";import { Separator } from "@/app/components/Separator";
+import { useContext, useEffect, useState } from "react";
+import styled, { createGlobalStyle } from "styled-components";
+import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
+import { useRouter } from "next/router";
+import Cookies from "js-cookie"; // Importando o js-cookie para obter o token
 
-const HeaderHeight = '80px'; 
+const HeaderHeight = "80px";
 
 // Estilo global para o fundo preto e texto branco
 const GlobalStyle = createGlobalStyle`
@@ -76,24 +78,102 @@ interface PostData {
   title: string;
   content: string;
   author: string;
+  intro: string;
+  imagem: string;
+  video: string;
 }
 
 const PostCreate = () => {
-  const [post, setPost] = useState<PostData>({ title: '', content: '', author: '' });
+  const [post, setPost] = useState<PostData>({
+    title: "",
+    content: "",
+    author: "",
+    intro: "",
+    imagem: "",
+    video: "",
+  });
+  const authContext = useContext(AuthContext); // Usando o AuthContext
+  const router = useRouter(); // Hook para redirecionamento
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log('Post criado:', post);
+  // Verifica se o usuário está autenticado
+  useEffect(() => {
+    if (!authContext?.user) {
+      router.push("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
+    }
+  }, [authContext, router]);
+
+  // Função para extrair o ID do YouTube da URL
+  const extractYouTubeId = (url: string) => {
+    const regExp = /(?:https?:\/\/(?:www\.)?youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=|.*[?&]v%3D)([a-zA-Z0-9_-]{11}))/;
+    const match = url.match(regExp);
+    return match ? match[1] : url; // Retorna o ID se encontrado, caso contrário, retorna a URL original
   };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const token = Cookies.get("token"); // Obtém o token do cookie
+
+    if (!token) {
+      alert("Token inválido ou ausente. Faça login novamente.");
+      return;
+    }
+
+    const postData = {
+      title: post.title,
+      author: post.author,
+      intro: post.intro,
+      content: post.content,
+      imageUrl: post.imagem,
+      videoUrl: extractYouTubeId(post.video), // Extrai apenas o ID do vídeo
+    };
+
+    try {
+      const response = await fetch(
+        "https://blog-posts-hori.onrender.com/post",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho
+          },
+          body: JSON.stringify(postData), // Envia os dados como JSON
+        }
+      );
+
+      // if (!response.ok) {
+      //   throw new Error(`Erro ao criar o post: ${response.statusText}`);
+      // }
+
+      // Verifica se a resposta contém um corpo antes de chamar response.json()
+      let data = null;
+      const contentType = response.headers.get("Content-Type");
+      if (contentType && contentType.includes("application/json")) {
+        data = await response.json();
+      }
+
+      console.log("Post criado com sucesso:", data);
+      alert("Post criado com sucesso!");
+      router.push("/"); // Redireciona para a página inicial após criar o post
+    } catch (error) {
+      console.error("Erro ao criar o post:", error);
+      alert("Erro ao criar o post. Tente novamente.");
+    }
+  };
+
+  // Se o usuário não estiver autenticado, não renderiza o conteúdo
+  if (!authContext?.user) {
+    return null;
+  }
 
   return (
     <>
-    <Container>
-    <div>
-        <Separator text="Inclua uma nova postagem" />
-      </div>
-    </Container>
-    
+      <Container>
+        <div>
+          <Separator text="Inclua uma nova postagem" />
+        </div>
+      </Container>
+
       <GlobalStyle />
       <Form onSubmit={handleSubmit}>
         <Input
@@ -104,6 +184,7 @@ const PostCreate = () => {
             setPost({ ...post, title: e.target.value })
           }
         />
+
         <Textarea
           placeholder="Conteúdo"
           value={post.content}
@@ -117,6 +198,33 @@ const PostCreate = () => {
           value={post.author}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPost({ ...post, author: e.target.value })
+          }
+        />
+
+        <Input
+          type="text"
+          placeholder="Introdução"
+          value={post.intro}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPost({ ...post, intro: e.target.value })
+          }
+        />
+
+        <Input
+          type="text"
+          placeholder="Link Imagem"
+          value={post.imagem}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPost({ ...post, imagem: e.target.value })
+          }
+        />
+
+        <Input
+          type="text"
+          placeholder="Link Video"
+          value={post.video}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setPost({ ...post, video: extractYouTubeId(e.target.value) }) // Extrai o ID ao alterar o valor
           }
         />
         <Button type="submit">Criar Post</Button>
