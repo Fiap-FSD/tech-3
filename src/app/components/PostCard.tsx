@@ -72,7 +72,6 @@ const PostCard = ({ post }: PostCardProps) => {
   };
 
   const handleDelete = async (id: number) => {
-    console.log("ID >>>>>>", id); // Log para verificar o valor do ID
     if (!id) {
       console.error("ID do post está indefinido.");
       alert("Erro: Não foi possível excluir o post. ID inválido.");
@@ -89,7 +88,6 @@ const PostCard = ({ post }: PostCardProps) => {
       // }
 
       alert("Post excluído com sucesso!");
-      console.log(`Post com ID ${id} excluído com sucesso`);
       // Atualize a lista de posts ou redirecione, se necessário
     } catch (error) {
       console.error("Erro ao excluir o post:", error);

@@ -141,7 +141,6 @@ const PostCreate = () => {
       if (contentType && contentType.includes("application/json")) {
         data = await response.json();
       }
-      console.log("Post criado com sucesso:", data);
       alert("Post criado com sucesso!");
       router.push("/"); // Redireciona para a página inicial após criar o post
     } catch (error) {

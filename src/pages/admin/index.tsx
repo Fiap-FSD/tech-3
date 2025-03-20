@@ -121,7 +121,6 @@ const Admin = () => {
       return;
     }
     try {
-      console.log("ID >>>>>>", id);
       // Envia a solicitação de exclusão
       const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
         method: "DELETE",
@@ -133,8 +132,6 @@ const Admin = () => {
 
       // Verifica se a resposta da API foi bem-sucedida
       if (response.ok) {
-        console.log(`Post com id ${id} excluído com sucesso`);
-
         // Atualiza a lista de posts sem o post excluído
         setPosts((prevPosts) => prevPosts.filter(post => post.id !== id));
       } else {
