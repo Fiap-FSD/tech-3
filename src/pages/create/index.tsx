@@ -62,7 +62,7 @@ const Textarea = styled.textarea`
 
 const Button = styled.button`
   padding: 10px;
-  background-color: #007bff;
+  background-color: #007bff; 
   color: white;
   border: none;
   border-radius: 5px;
@@ -72,6 +72,7 @@ const Button = styled.button`
     background-color: #218838; /* Tom mais escuro de verde ao passar o mouse */
   }
 `;
+
 
 interface PostData {
   title: string;
