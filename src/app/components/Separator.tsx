@@ -21,9 +21,9 @@ const Text = styled.span`
   flex-shrink: 0;
   padding-left: 24px;
   padding-right: 24px;
-  font-size: 1.25rem; // Corresponde ao text-2xl
+  font-size: 1.5rem; 
   font-weight: 700; // Corresponde ao font-bold
-  color: #d1d5db; // Cor correspondente ao text-neutral-100 do Tailwind
+  color: white; // Cor do texto alterada para branca
 `;
 
 export const Separator = ({ text }: SeparatorProps) => {

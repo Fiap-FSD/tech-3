@@ -2,13 +2,16 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import styled from 'styled-components';
 import { extractYouTubeId } from '@/utils/extractYouTubeId';
+import GlobalStyle from "@/app/componentStyles/globalStyles";
+
+const HeaderHeight = "120px"; // Defina a altura do header
 
 // Estilização do container
 const Container = styled.div`
   background-color: black;
   padding: 20px;
   max-width: 800px;
-  margin: 100px auto;
+  margin: calc(${HeaderHeight} + 20px) auto 100px;
   background-color: #333;
   color: white;
   border-radius: 5px;
@@ -137,26 +140,29 @@ const PostDetails = () => {
     return <Container>Carregando...</Container>;
   }
   return (
-    <Container>
-      <Title>{post.title}</Title>
-      <Author>Autor: {post.author}</Author>
-      <Content>{post.content}</Content>
+    <>
+      <GlobalStyle />
+      <Container>
+        <Title>{post.title}</Title>
+        <Author>Autor: {post.author}</Author>
+        <Content>{post.content}</Content>
 
-      {/* Condicional para exibir a imagem se existir */}
-      {post.imageUrl && (
-        <MediaContainer>
-          <Image src={post.imageUrl} alt="Imagem do post" />
-        </MediaContainer>
-      )}
+        {/* Condicional para exibir a imagem se existir */}
+        {post.imageUrl && (
+          <MediaContainer>
+            <Image src={post.imageUrl} alt="Imagem do post" />
+          </MediaContainer>
+        )}
 
-      {/* Condicional para exibir o vídeo do YouTube se existir */}
-      {post.videoUrl && (
-        <MediaContainer>
-          {/** Exibe o componente de vídeo do YouTube passando o ID extraído **/}
-          {<YoutubeVideo videoId={post.videoUrl}/>}
-        </MediaContainer>
-      )}
-    </Container>
+        {/* Condicional para exibir o vídeo do YouTube se existir */}
+        {post.videoUrl && (
+          <MediaContainer>
+            {/** Exibe o componente de vídeo do YouTube passando o ID extraído **/}
+            {<YoutubeVideo videoId={post.videoUrl}/>}
+          </MediaContainer>
+        )}
+      </Container>
+    </>
   );
 };
 

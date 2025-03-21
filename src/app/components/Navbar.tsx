@@ -6,7 +6,7 @@ import AuthContext from "../context/authContext";
 
 // Estilizando o Header
 const Header = styled.header`
-  background-color: #1f2937;
+  background-color: #333;
   position: fixed;
   top: 0;
   left: 0;

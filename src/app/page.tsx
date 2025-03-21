@@ -5,16 +5,7 @@ import styled, { createGlobalStyle } from 'styled-components';
 import PostCard from './components/PostCard';
 import Navbar from './components/Navbar';
 import { Hero } from './components/Hero';
-
-// Estilizando o fundo global da página
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: #000000; /* Fundo preto atualizado */
-    color: white; /* Texto branco */
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-`;
+import GlobalStyle from "@/app/componentStyles/globalStyles";
 
 const Container = styled.div`
   padding: 20px;
@@ -24,8 +15,6 @@ const Container = styled.div`
     padding: 10px;
   }
 `;
-
-
 
 const SearchInput = styled.input`
   min-width: 450px;

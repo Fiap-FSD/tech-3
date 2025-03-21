@@ -29,13 +29,13 @@ const Description = styled.p`
 
 // Estilo global para o fundo da página (preto)
 const PageContainer = styled.div`
-  background-color: #000000; // Fundo preto
+  background-color: transparent; // Fundo transparente
   color: white; // Cor do texto branco por padrão
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px;  // Adiciona padding para não colar o conteúdo nas bordas
+  padding: 20px; // Adiciona padding para não colar o conteúdo nas bordas
 `;
 
 interface HeroProps {

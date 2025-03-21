@@ -3,22 +3,14 @@ import { useRouter } from "next/router";
 import { useState, useContext } from "react";
 import styled, { createGlobalStyle } from "styled-components";
 import AuthContext from "@/app/context/authContext";
+import GlobalStyle from "@/app/componentStyles/globalStyles";
 
-// Estilo global para fundo preto e textos brancos
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: black;
-    color: white;
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-`;
 
-const HeaderHeight = "80px"; // Aumentando o valor para criar mais espaço
+const HeaderHeight = "120px"; // Aumentando o valor para criar mais espaço
 
 const Form = styled.form`
   max-width: 600px;
-  margin: 50px auto;
+  margin: 20px auto; /* Reduzindo o espaço superior */
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
@@ -26,7 +18,6 @@ const Form = styled.form`
   flex-direction: column;
   gap: 15px;
   background-color: #222; /* Cor de fundo do formulário */
-  margin-top: 20px; /* Ajustando o espaço acima do formulário */
 `;
 
 const Input = styled.input`
@@ -42,8 +33,9 @@ const Container = styled.div`
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
-  padding-top: ${HeaderHeight}; // Adicionando o padding para não sobrepor o header
+  padding-top: ${HeaderHeight};
 `;
+
 
 const Button = styled.button`
   padding: 10px;

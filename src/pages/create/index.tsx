@@ -5,18 +5,9 @@ import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
 import { useRouter } from "next/router";
 import { extractYouTubeId } from '@/utils/extractYouTubeId';
 import * as authUtils from "@/utils/authUtils";
+import GlobalStyle from "@/app/componentStyles/globalStyles";
 
-const HeaderHeight = "80px";
-
-// Estilo global para o fundo preto e texto branco
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: black; /* Cor de fundo preto */
-    color: white; /* Cor do texto branco */
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-`;
+const HeaderHeight = "120px";
 
 const Form = styled.form`
   max-width: 600px;

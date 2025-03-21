@@ -2,6 +2,7 @@ import Navbar from "./components/Navbar";
 import StyledComponentsRegistry from "@/app/register/StyledComponentsRegistry";
 import type { Metadata } from "next";
 import "./globals.css";
+import GlobalStyle from "@/app/componentStyles/globalStyles";
 
 
 export const metadata: Metadata = {
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="pt-BR">
       <body>
+        <GlobalStyle />
         <Navbar />
         <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
       </body>

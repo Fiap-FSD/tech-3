@@ -5,18 +5,9 @@ import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; // Usando o novo useRouter do Next.js 13+
 import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
 import * as authUtils from "@/utils/authUtils"; // Importando todos os membros do utilitário de autenticação
+import GlobalStyle from "@/app/componentStyles/globalStyles";
 
-const HeaderHeight = "80px"; // Defina a altura do header
-
-// Estilizando o fundo global da página
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: black;
-    color: white;
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-`;
+const HeaderHeight = "120px"; // Defina a altura do header
 
 const Container = styled.div`
   padding: 20px;
@@ -25,11 +16,10 @@ const Container = styled.div`
   padding-top: ${HeaderHeight}; // Adicionando o padding para não sobrepor o header
 `;
 
-// Estilizando o título "Administração"
 const Title = styled.h1`
   font-size: 2.5rem; // Tamanho maior para destacar o título
   font-weight: 700; // Negrito
-  color: white;
+  color: white; 
   text-align: center; // Centraliza o título
   margin-bottom: 1rem;
 `;
@@ -71,6 +61,14 @@ const DeleteButton = styled(Button)`
   &:hover {
     background-color: #c82333;
   }
+`;
+
+const PostsContainer = styled.div`
+  background-color: #333;  // Fundo cinza escuro para a lista de posts
+  padding: 20px;
+  border-radius: 8px;
+  color: white; // Garantir que o texto permaneça visível
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Adiciona uma leve sombra para um toque mais moderno
 `;
 
 interface Post {
@@ -157,21 +155,25 @@ const Admin = () => {
 
         {/* Título em destaque */}
         <Title>Lista de posts:</Title>
-        {posts.map((post) => (
-          <PostItem key={post.id}>
-            <span>
-              {post.title} - {post.author}
-            </span>
-            <div>
-              <Link href={`/edit/${post.id}`} passHref>
-                <EditButton>Editar</EditButton>
-              </Link>
-              <DeleteButton onClick={() => handleDelete(post.id)}>
-                Excluir
-              </DeleteButton>
-            </div>
-          </PostItem>
-        ))}
+
+        {/* Container para lista de posts com fundo preto */}
+        <PostsContainer>
+          {posts.map((post) => (
+            <PostItem key={post.id}>
+              <span>
+                {post.title} - {post.author}
+              </span>
+              <div>
+                <Link href={`/edit/${post.id}`} passHref>
+                  <EditButton>Editar</EditButton>
+                </Link>
+                <DeleteButton onClick={() => handleDelete(post.id)}>
+                  Excluir
+                </DeleteButton>
+              </div>
+            </PostItem>
+          ))}
+        </PostsContainer>
       </Container>
     </>
   );

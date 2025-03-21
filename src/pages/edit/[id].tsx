@@ -3,18 +3,10 @@ import React, { useState, useEffect } from 'react';
 import styled, { createGlobalStyle } from 'styled-components';
 import { extractYouTubeId } from '@/utils/extractYouTubeId';
 import * as authUtils from "@/utils/authUtils";
+import GlobalStyle from "@/app/componentStyles/globalStyles";
+import { Separator } from '@/app/components/Separator';
 
 const HeaderHeight = '120px'; // Aumentando o valor para criar mais espaço
-
-// Estilo global para o fundo preto e texto branco
-const GlobalStyle = createGlobalStyle`
-  body {
-    background-color: black; /* Cor de fundo preto */
-    color: white; /* Cor do texto branco */
-    margin: 0;
-    font-family: Arial, sans-serif;
-  }
-`;
 
 const Form = styled.form`
   max-width: 600px;
@@ -25,7 +17,14 @@ const Form = styled.form`
   gap: 15px;
   background-color: #333; /* Cor de fundo do formulário */
   border-radius: 5px;
-  margin-top: ${HeaderHeight}; /* Aumentando o espaçamento para não sobrepor o header */
+  margin-top: 1px;
+`;
+
+const Container = styled.div`
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  padding-top: ${HeaderHeight}; // Adicionando o padding para não sobrepor o header
 `;
 
 const Input = styled.input`
@@ -148,6 +147,12 @@ const PostEdit: React.FC = () => {
 
   return (
     <>
+      <Container>
+        <div>
+          <Separator text="Edite o Post" />
+        </div>
+      </Container>
+
       <GlobalStyle /> {/* Aplica o estilo global */}
 
       <Form onSubmit={handleSubmit}>
