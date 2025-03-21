@@ -99,9 +99,9 @@ const PostEdit: React.FC = () => {
             title: fetchedPost.title,
             content: fetchedPost.content,
             author: fetchedPost.author,
-            intro: fetchedPost.intro || '', // Garante que 'intro' seja preenchido
-            imageUrl: fetchedPost.imageUrl || '', // Garante que 'imageUrl' seja preenchido
-            videoUrl: extractYouTubeId(fetchedPost.videoUrl) || '', // Usa a função utilitária
+            intro: fetchedPost.intro || '',
+            imageUrl: fetchedPost.imageUrl || '',
+            videoUrl: fetchedPost.videoUrl || '',
           });
         } catch (error) {
           console.error('Erro ao buscar os detalhes do post:', error);
