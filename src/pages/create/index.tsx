@@ -1,11 +1,13 @@
-"use client";import { Separator } from "@/app/components/Separator";
+"use client";
+import { Separator } from "@/app/components/Separator";
 import { useContext, useEffect, useState } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
 import { useRouter } from "next/router";
 import { extractYouTubeId } from '@/utils/extractYouTubeId';
 import * as authUtils from "@/utils/authUtils";
 import GlobalStyle from "@/app/componentStyles/globalStyles";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const HeaderHeight = "120px";
 
@@ -100,7 +102,13 @@ const PostCreate = () => {
     const token = authUtils.getAuthToken(); // Obtém o token do cookie
 
     if (!token) {
-      alert("Token inválido ou ausente. Faça login novamente.");
+      // alert("Token inválido ou ausente. Faça login novamente.");
+      toast.error("Token inválido ou ausente. Faça login novamente!", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
       return;
     }
 
@@ -132,11 +140,31 @@ const PostCreate = () => {
       if (contentType && contentType.includes("application/json")) {
         data = await response.json();
       }
-      alert("Post criado com sucesso!");
-      router.push("/"); // Redireciona para a página inicial após criar o post
+      // alert("Post criado com sucesso!");
+      toast.success("Post criado com sucesso!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        transition: Bounce,
+      });
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1500); 
+
     } catch (error) {
       console.error("Erro ao criar o post:", error);
-      alert("Erro ao criar o post. Tente novamente.");
+      // alert("Erro ao criar o post. Tente novamente.");
+      toast.error("Erro ao criar o post. Tente novamente!", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
     }
   };
 
@@ -208,6 +236,18 @@ const PostCreate = () => {
         />
         <Button type="submit">Criar Post</Button>
       </Form>
+
+      {/* Container de notificações */}
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        transition={Bounce}
+      />
     </>
   );
 };
