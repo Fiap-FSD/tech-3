@@ -1,9 +1,11 @@
-"use client";import { Separator } from "@/app/components/Separator";
+"use client";
+import { Separator } from "@/app/components/Separator";
 import { useRouter } from "next/router";
 import { useState, useContext } from "react";
-import styled, { createGlobalStyle } from "styled-components";
+import styled from "styled-components";
 import AuthContext from "@/app/context/authContext";
 import GlobalStyle from "@/app/componentStyles/globalStyles";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 
 const HeaderHeight = "120px"; // Aumentando o valor para criar mais espaço
@@ -50,11 +52,6 @@ const Button = styled.button`
   }
 `;
 
-const ErrorMessage = styled.p`
-  color: red;
-  text-align: center;
-`;
-
 interface Credentials {
   email: string;
   password: string;
@@ -66,7 +63,7 @@ const Login = () => {
     password: "",
   });
 
-  const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
+  // const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
   const authContext = useContext(AuthContext); // Usando o AuthContext
   const router = useRouter();
 
@@ -92,11 +89,21 @@ const Login = () => {
         }
       } else {
         // Se o usuário não existir, exibe uma mensagem de erro
-        setError("Usuário não encontrado. Verifique suas credenciais.");
+        toast.error("Usuário não encontrado. Verifique suas credenciais.", {
+          position: "top-center",
+          autoClose: 4000,
+          theme: "colored",
+          transition: Bounce,
+        });
       }
     } catch (error) {
       console.error("Erro no login:", error);
-      setError("Erro ao fazer login. Tente novamente."); // Mensagem de erro genérica
+      toast.error("Erro ao fazer login. Tente novamente.", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
     }
   };
 
@@ -110,9 +117,7 @@ const Login = () => {
 
       {/* Aplica o estilo global para o fundo preto e texto branco */}
       <GlobalStyle />
-      <Form onSubmit={handleSubmit}>
-        {error && <ErrorMessage>{error}</ErrorMessage>}{" "}
-        {/* Exibe a mensagem de erro */}
+      <Form onSubmit={handleSubmit}>       
         <Input
           type="email"
           placeholder="Email"
@@ -131,6 +136,18 @@ const Login = () => {
         />
         <Button type="submit">Entrar</Button>
       </Form>
+
+      {/* Container de notificações */}
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        transition={Bounce}
+      />
     </>
   );
 };

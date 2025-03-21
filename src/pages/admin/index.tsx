@@ -1,4 +1,5 @@
-"use client";import styled, { createGlobalStyle } from "styled-components";
+"use client";
+import styled from "styled-components";
 import Link from "next/link";
 import { Separator } from "@/app/components/Separator";
 import { useContext, useEffect, useState } from "react";
@@ -6,6 +7,7 @@ import { useRouter } from "next/navigation"; // Usando o novo useRouter do Next.
 import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
 import * as authUtils from "@/utils/authUtils"; // Importando todos os membros do utilitário de autenticação
 import GlobalStyle from "@/app/componentStyles/globalStyles";
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const HeaderHeight = "120px"; // Defina a altura do header
 
@@ -104,6 +106,12 @@ const Admin = () => {
           setPosts(mappedPosts); // Atualiza o estado com os dados mapeados
         } catch (error) {
           console.error('Erro ao buscar os posts:', error);
+          toast.error("Erro ao buscar os posts.", {
+            position: "top-center",
+            autoClose: 4000,
+            theme: "colored",
+            transition: Bounce,
+          });
         }
       };
       fetchPosts();
@@ -115,7 +123,13 @@ const Admin = () => {
     const token = authUtils.getAuthToken(); // Obtém o token do cookie
 
     if (!token) {
-      alert("Token inválido ou ausente. Faça login novamente.");
+      // alert("Token inválido ou ausente. Faça login novamente.");
+      toast.error("Token inválido ou ausente. Faça login novamente!", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
       return;
     }
     try {
@@ -131,12 +145,31 @@ const Admin = () => {
       // Verifica se a resposta da API foi bem-sucedida
       if (response.ok) {
         // Atualiza a lista de posts sem o post excluído
-        setPosts((prevPosts) => prevPosts.filter(post => post.id !== id));
+        toast.success("Post deletado com sucesso!", {
+          position: "top-center",
+          autoClose: 1000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "colored",
+          transition: Bounce,
+        });
+        
+        setPosts((prevPosts) => prevPosts.filter(post => post.id !== id));    
+
+        
       } else {
         console.error("Erro ao excluir o post:", response.status, response.statusText);
       }
     } catch (error) {
       console.error("Erro ao excluir post:", error);
+      toast.error("Erro ao excluir o post. Tente novamente!", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
     }
   };
 
@@ -175,6 +208,18 @@ const Admin = () => {
           ))}
         </PostsContainer>
       </Container>
+
+      {/* Container de notificações */}
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        transition={Bounce}
+      />
     </>
   );
 };

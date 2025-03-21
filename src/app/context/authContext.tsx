@@ -59,7 +59,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
     } catch (error: any) {
       console.error('Erro no login:', error.message); // Apenas loga o erro no console
-      alert('Erro ao realizar login. Por favor, verifique suas credenciais ou tente novamente mais tarde.');
+      // alert('Erro ao realizar login. Por favor, verifique suas credenciais ou tente novamente mais tarde.');
     }
   };
 

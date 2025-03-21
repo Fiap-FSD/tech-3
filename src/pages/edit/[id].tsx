@@ -1,10 +1,11 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
-import styled, { createGlobalStyle } from 'styled-components';
+import styled from 'styled-components';
 import { extractYouTubeId } from '@/utils/extractYouTubeId';
 import * as authUtils from "@/utils/authUtils";
 import GlobalStyle from "@/app/componentStyles/globalStyles";
 import { Separator } from '@/app/components/Separator';
+import { Bounce, ToastContainer, toast } from "react-toastify";
 
 const HeaderHeight = '120px'; // Aumentando o valor para criar mais espaço
 
@@ -116,13 +117,25 @@ const PostEdit: React.FC = () => {
 
     if (!id) {
       alert('ID do post não encontrado.');
+      toast.error("ID do post não encontrado. Busque novamente!", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
       return;
     }
 
     const token = authUtils.getAuthToken(); // Obtém o token do cookie
 
     if (!token) {
-      alert("Token inválido ou ausente. Faça login novamente.");
+      // alert("Token inválido ou ausente. Faça login novamente.");
+      toast.error("Token inválido ou ausente. Faça login novamente!", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
       return;
     }
 
@@ -137,11 +150,31 @@ const PostEdit: React.FC = () => {
       });
 
       const updatedPost = await response.json();
-      alert('Post atualizado com sucesso!');
-      router.push('/'); // Redireciona para a página inicial após a atualização
+      // alert('Post atualizado com sucesso!');
+      toast.success("Post atualizado com sucesso!", {
+        position: "top-center",
+        autoClose: 1000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "colored",
+        transition: Bounce,
+      });
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1500); 
+
     } catch (error) {
       console.error('Erro ao atualizar o post:', error);
-      alert('Erro ao atualizar o post. Tente novamente.');
+      // alert('Erro ao atualizar o post. Tente novamente.');
+      toast.error("Erro ao atualizar o post. Tente novamente!", {
+        position: "top-center",
+        autoClose: 4000,
+        theme: "colored",
+        transition: Bounce,
+      });
     }
   };
 
@@ -209,6 +242,18 @@ const PostEdit: React.FC = () => {
         />
         <Button type="submit">Salvar alterações</Button>
       </Form>
+
+      {/* Container de notificações */}
+      <ToastContainer
+        position="top-center"
+        autoClose={4000}
+        hideProgressBar={false}
+        closeOnClick
+        pauseOnHover
+        draggable
+        theme="colored"
+        transition={Bounce}
+      />
     </>
   );
 };
