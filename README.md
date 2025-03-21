@@ -20,7 +20,7 @@ A equipe utilizou as seguintes ferramentas durante o desenvolvimento do projeto:
 
 - **Visual Studio Code**: Ferramenta utilizada para escrita e execução de código, com extensões específicas para JavaScript e Node.js. Sua integração com o terminal permite rodar o servidor diretamente dentro do editor, facilitando o desenvolvimento, testes e depuração de endpoints.
 
-- **GitHub**: O GitHub ofereceu controle de versão, permitindo que cada membro da equipe trabalhasse em diferentes funcionalidades sem afetar o código principal. A utilização de pull requests facilitou a revisão de código e a integração das mudanças, garantindo qualidade e consistência. O GitHub também integrou ferramentas de CI/CD, automatizando testes e o deploy do código.
+- **GitHub**: O GitHub ofereceu controle de versão, permitindo que cada membro da equipe trabalhasse em diferentes funcionalidades sem afetar o código principal. A utilização de pull requests facilitou a revisão de código e a integração das mudanças, garantindo qualidade e consistência.
 
 - **Next.js**: Framework para React que permite renderização do lado do servidor (SSR) e geração de sites estáticos (SSG). Foi utilizado para criar uma estrutura escalável e otimizada para o aplicativo, aproveitando seus recursos como roteamento automático, APIs e renderização híbrida.
 
@@ -58,8 +58,12 @@ src/
       Separator.tsx  Componente Separator utilizado para separar visualmente as seções de conteúdo
     context/
       authContext.tsx Contexto de autenticação centralizado
+    componentStyles/
+      globalStyles.ts Componente utilizado para adicionar a imagem de fundo e configurar o layout o ambiente
     styles/
       global.css     Estilos globais do projeto
+    register/
+      StyledComponentsRegistry.tsx      Componente para garantir a renderização dos estilos
     layout.tsx       Layout principal da aplicação
     page.css         Estilos específicos da página
     page.tsx         Página principal (Home)
@@ -75,6 +79,9 @@ src/
     post/
       [id].tsx       Página de detalhes do post (roteamento dinâmico)
     _app.tsx         Componente principal da aplicação
+  utils/
+    authUtils.ts      Componente gerencia o token de autenticação usando cookies
+    extractYouTubeId.ts Componente extrai o ID do youtube de uma URL
 package.json
 ```
 
@@ -121,14 +128,6 @@ No terminal do projeto, rode:
  npm install
 ```
 
-#### Configuração do ambiente:
-
-Crie um arquivo .env.local na raiz do projeto e adicione as variáveis de ambiente necessárias, como a URL da API backend:
-
-```bash
-  NEXT_PUBLIC_API_URL=https://blog-posts-hori.onrender.com
-```
-
 #### Rodando Localmente:
 
 No terminal do projeto, rode:
@@ -156,13 +155,11 @@ Com o link que aparecerá no seu terminal, copie e cole no seu navegador.
 
 ## 📜 Conclusão
 
-Este projeto proporcionou a oportunidade de aprimorar habilidades no desenvolvimento front-end, utilizando tecnologias modernas e poderosas como React.js, NextJS, Axios, TailwindCSS e Styled-components. Ao longo do desenvolvimento, foi possível criar uma interface gráfica dinâmica, responsiva e intuitiva para a aplicação de blog, que se conecta de forma eficiente com a API do back-end.
+Este projeto foi uma excelente oportunidade para aprimorar habilidades no desenvolvimento front-end, utilizando tecnologias modernas e robustas como React.js, Next.js, Axios, TailwindCSS e Styled-components. Durante o desenvolvimento, conseguimos criar uma interface gráfica dinâmica, responsiva e intuitiva para a aplicação de blog, garantindo uma experiência de usuário fluida e uma integração eficiente com a API do back-end.
 
-A arquitetura adotada, baseada no padrão NextJS e no conceito de JAMstack, permitiu um desenvolvimento ágil, com foco em modularidade, escalabilidade e otimização de performance. A integração do Axios facilitou as requisições HTTP, enquanto o uso do TailwindCSS e Styled-components proporcionou uma experiência de design fluída e flexível, permitindo um controle preciso dos estilos.
+A arquitetura adotada, baseada no padrão NextJS que trouxe vantagens significativas, como modularidade, escalabilidade e alta performance, permitindo um desenvolvimento ágil e bem estruturado. A integração do Axios facilitou a comunicação com a API, enquanto TailwindCSS e Styled-components garantiram um design coeso, flexível e de fácil manutenção.
 
-O projeto também reforçou a importância de boas práticas de desenvolvimento, como controle de versão via GitHub, e integração de ferramentas de CI/CD para garantir a qualidade do código. A aplicação está pronta para ser utilizada por docentes e alunos, permitindo uma interação eficaz com os posts do blog, proporcionando um ambiente de leitura agradável e funcional.
-
-Com essa implementação, o projeto evolui para um sistema mais robusto, modular e de fácil manutenção, alinhado com as melhores práticas de desenvolvimento web modernas. Estamos confiantes de que essa solução trará uma excelente experiência para os usuários finais.
+O projeto reforçou a importância das boas práticas de desenvolvimento, como controle de versão pelo GitHub, organização modular do código e foco na usabilidade. O resultado é uma aplicação funcional e bem estruturada, pronta para ser utilizada por docentes e alunos, oferecendo um ambiente de leitura e interação intuitivo.
 
 > [!CAUTION]
 > AJEITAR A CONCLUSÃO
