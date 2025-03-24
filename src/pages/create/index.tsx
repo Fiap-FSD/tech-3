@@ -5,8 +5,8 @@ import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 import AuthContext from "@/app/context/authContext"; 
 import { useRouter } from "next/router";
-import { extractYouTubeId } from '@/utils/extractYouTubeId';
-import * as authUtils from "@/utils/authUtils";
+import { extractYouTubeId } from '@/pages/utils/extractYouTubeId';
+import * as authUtils from "@/pages/utils/authUtils";
 import GlobalStyle from "@/app/componentStyles/globalStyles";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 

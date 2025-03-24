@@ -5,7 +5,7 @@ import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
 import { jwtDecode } from 'jwt-decode'; 
-import * as authUtils from "@/utils/authUtils";
+import * as authUtils from "@/pages/utils/authUtils";
 
 interface User {
   id: string;

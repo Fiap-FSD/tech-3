@@ -6,7 +6,7 @@ import { Separator } from "@/app/components/Separator";
 import { useContext, useEffect, useState } from "react";
 import { useRouter } from "next/navigation"; 
 import AuthContext from "@/app/context/authContext"; 
-import * as authUtils from "@/utils/authUtils"; 
+import * as authUtils from "@/pages/utils/authUtils"; 
 import GlobalStyle from "@/app/componentStyles/globalStyles";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 
