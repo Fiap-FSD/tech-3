@@ -70,28 +70,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const checkAuth = async () => {
-    const token = authUtils.getAuthToken(); 
-     
+    const token = authUtils.getAuthToken();
+  
     if (token) {
       try {
         const decodedToken: any = jwtDecode(token);
-
+        const currentTime = Math.floor(Date.now() / 1000);
+        if (decodedToken.exp && decodedToken.exp < currentTime) {
+          console.warn('Token expirado. Realizando logout...');
+          authUtils.removeAuthToken();
+          setUser(null);
+          return;
+        }
+  
         const user = {
           id: decodedToken.sub,
-          name: decodedToken.name || 'Unknown', 
+          name: decodedToken.name || 'Unknown',
           email: decodedToken.email,
           role: decodedToken.role,
         };
-
-        setUser(user); 
+  
+        setUser(user);
       } catch (error) {
         console.error('Erro ao decodificar o token:', error);
-        authUtils.removeAuthToken(); 
+        authUtils.removeAuthToken();
         setUser(null);
       }
     }
-    setLoading(false); 
+    setLoading(false);
   };
+  
 
   useEffect(() => {
     checkAuth(); 
