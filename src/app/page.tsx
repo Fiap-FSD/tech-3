@@ -38,7 +38,7 @@ const Container = styled.div`
 `;
 
 const SearchInput = styled.input`
-  min-width: 200px;
+  min-width: 250px;
   border: 1px solid #555;
   padding: 15px;
   margin-bottom: 10px;
@@ -51,7 +51,7 @@ const SearchInput = styled.input`
   transition: box-shadow 0.2s;
 
   
-  width: calc(100% - 800px);
+  width: calc(100% - 500px);
 
   &:hover {
     box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); 
