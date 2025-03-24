@@ -118,7 +118,7 @@ const PostCreate = () => {
       intro: post.intro,
       content: post.content,
       imageUrl: post.imagem,
-      videoUrl: extractYouTubeId(post.video) || '',
+      videoUrl: post.video || '',
     };
 
     try {
