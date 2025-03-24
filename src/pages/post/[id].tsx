@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import styled from 'styled-components';
-import { extractYouTubeId } from '@/pages/utils/extractYouTubeId';
+import { extractYouTubeId } from '@/app/utils/extractYouTubeId';
 import GlobalStyle from "@/app/componentStyles/globalStyles";
 
 const HeaderHeight = "120px"; 

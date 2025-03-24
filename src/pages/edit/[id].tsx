@@ -2,8 +2,8 @@
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
-import { extractYouTubeId } from '@/pages/utils/extractYouTubeId';
-import * as authUtils from "@/pages/utils/authUtils";
+import { extractYouTubeId } from '@/app/utils/extractYouTubeId';
+import * as authUtils from "@/app/utils/authUtils";
 import GlobalStyle from "@/app/componentStyles/globalStyles";
 import { Separator } from '@/app/components/Separator';
 import { Bounce, ToastContainer, toast } from "react-toastify";
