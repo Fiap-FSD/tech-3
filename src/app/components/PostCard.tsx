@@ -54,28 +54,16 @@ interface PostCardProps {
   post: Post;
 }
 
-const PostCard = ({ post }: PostCardProps) => {
-  const [postDetails, setPostDetails] = useState<Post | null>(null);  
+const PostCard = ({ post }: PostCardProps) => { 
 
   return (
     <Card>
-      {postDetails ? (
-        <>
-          <Title>{postDetails.title}</Title>
-          <Author>Autor: {postDetails.author}</Author>
-          <Description>{postDetails.description}</Description>
-          <ReadMore href="#" onClick={(e) => { e.preventDefault(); setPostDetails(null); }}>
-            Voltar
-          </ReadMore>
-        </>
-      ) : (
-        <>
+       <>
           <Title>{post.title}</Title>
           <Author>Autor: {post.author}</Author>
           <Description>{post.description}</Description>
           <ReadMore href={`/post/${post.id}`}>Ler mais</ReadMore>
         </>
-      )}
     </Card>
   );
 };
