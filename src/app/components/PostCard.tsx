@@ -3,7 +3,6 @@ import styled from 'styled-components';
 import Link from 'next/link';
 import { useState } from 'react';
 
-// Estilizando o Card
 const Card = styled.div`
   border: 1px solid #555;
   padding: 15px;
@@ -56,44 +55,7 @@ interface PostCardProps {
 }
 
 const PostCard = ({ post }: PostCardProps) => {
-  const [postDetails, setPostDetails] = useState<Post | null>(null);
-
-  const handleReadMore = async () => {
-    try {
-      const response = await fetch(`https://blog-posts-hori.onrender.com/post/${post.id}`);
-      if (!response.ok) {
-        // throw new Error(`Erro ao buscar o post com ID ${post.id}: ${response.statusText}`);
-      }
-      const data = await response.json();
-      setPostDetails(data);
-    } catch (error) {
-      console.error('Erro ao buscar os detalhes do post:', error);
-    }
-  };
-
-  const handleDelete = async (id: number) => {
-    if (!id) {
-      console.error("ID do post está indefinido.");
-      alert("Erro: Não foi possível excluir o post. ID inválido.");
-      return;
-    }
-
-    try {
-      const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
-        method: "DELETE",
-      });
-
-      // if (!response.ok) {
-      //   throw new Error(`Erro ao excluir o post com ID ${id}: ${response.statusText}`);
-      // }
-
-      alert("Post excluído com sucesso!");
-      // Atualize a lista de posts ou redirecione, se necessário
-    } catch (error) {
-      console.error("Erro ao excluir o post:", error);
-      alert("Erro ao excluir o post. Tente novamente.");
-    }
-  };
+  const [postDetails, setPostDetails] = useState<Post | null>(null);  
 
   return (
     <Card>

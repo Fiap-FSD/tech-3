@@ -1,42 +1,41 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 import styled from "styled-components";
 import Link from "next/link";
 import { Separator } from "@/app/components/Separator";
 import { useContext, useEffect, useState } from "react";
-import { useRouter } from "next/navigation"; // Usando o novo useRouter do Next.js 13+
-import AuthContext from "@/app/context/authContext"; // Importando o AuthContext
-import * as authUtils from "@/utils/authUtils"; // Importando todos os membros do utilitário de autenticação
+import { useRouter } from "next/navigation"; 
+import AuthContext from "@/app/context/authContext"; 
+import * as authUtils from "@/utils/authUtils"; 
 import GlobalStyle from "@/app/componentStyles/globalStyles";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 
-const HeaderHeight = "120px"; // Defina a altura do header
+const HeaderHeight = "120px"; 
 
 const Container = styled.div`
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
-  padding-top: ${HeaderHeight}; // Adicionando o padding para não sobrepor o header
+  padding-top: ${HeaderHeight}; 
 `;
 
 const Title = styled.h1`
-  font-size: 2.5rem; // Tamanho maior para destacar o título
-  font-weight: 700; // Negrito
+  font-size: 2.5rem; 
+  font-weight: 700; 
   color: white; 
-  text-align: center; // Centraliza o título
+  text-align: center; 
   margin-bottom: 1rem;
 `;
 
-// Estilizando o item do post
 const PostItem = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-  border-bottom: 1px solid #555; // Cor da borda alterada para mais suave (cinza)
-  color: white; // Cor do texto dentro do item de post
+  border-bottom: 1px solid #555; 
+  color: white; 
 `;
 
-// Botão base
 const Button = styled.button`
   padding: 5px 10px;
   border: none;
@@ -46,7 +45,6 @@ const Button = styled.button`
   color: white;
 `;
 
-// Botão Editar
 const EditButton = styled(Button)`
   background-color:  #007bff;
   color: white;
@@ -56,7 +54,6 @@ const EditButton = styled(Button)`
   }
 `;
 
-// Botão Excluir
 const DeleteButton = styled(Button)`
   background-color: #dc3545;
   color: white;
@@ -66,11 +63,11 @@ const DeleteButton = styled(Button)`
 `;
 
 const PostsContainer = styled.div`
-  background-color: #333;  // Fundo cinza escuro para a lista de posts
+  background-color: #333;  
   padding: 20px;
   border-radius: 8px;
-  color: white; // Garantir que o texto permaneça visível
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); // Adiciona uma leve sombra para um toque mais moderno
+  color: white; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
 `;
 
 interface Post {
@@ -82,28 +79,26 @@ interface Post {
 
 const Admin = () => {
   const authContext = useContext(AuthContext);
-  const router = useRouter(); // Hook para redirecionamento
+  const router = useRouter(); 
 
   const [posts, setPosts] = useState<Post[]>([]);
 
-  // Verifica se o usuário está autenticado
   useEffect(() => {
     if (!authContext?.user) {
-      router.push("/login"); // Redireciona para a página de login se o usuário não estiver autenticado
+      router.push("/login"); 
     } else {
-      // Carregar posts da API
       const fetchPosts = async () => {
         try {
-          const response = await fetch('https://blog-posts-hori.onrender.com/post'); // Chamada à API
+          const response = await fetch('https://blog-posts-hori.onrender.com/post'); 
           const data = await response.json();
           const mappedPosts = data.map((post: any) => ({
-            id: post._id, // Mapeia _id para id
+            id: post._id, 
             title: post.title,
             author: post.author,
-            description: post.intro, // Usa intro como descrição
-            ...post, // Inclui outras propriedades, se necessário
+            description: post.intro, 
+            ...post, 
           }));
-          setPosts(mappedPosts); // Atualiza o estado com os dados mapeados
+          setPosts(mappedPosts); 
         } catch (error) {
           console.error('Erro ao buscar os posts:', error);
           toast.error("Erro ao buscar os posts.", {
@@ -118,12 +113,10 @@ const Admin = () => {
     }
   }, [authContext, router]);
 
-  // Handle Delete Post
   const handleDelete = async (id: number) => {
-    const token = authUtils.getAuthToken(); // Obtém o token do cookie
+    const token = authUtils.getAuthToken(); 
 
     if (!token) {
-      // alert("Token inválido ou ausente. Faça login novamente.");
       toast.error("Token inválido ou ausente. Faça login novamente!", {
         position: "top-center",
         autoClose: 4000,
@@ -133,18 +126,15 @@ const Admin = () => {
       return;
     }
     try {
-      // Envia a solicitação de exclusão
       const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho
+          Authorization: `Bearer ${token}`, 
         }
       });
 
-      // Verifica se a resposta da API foi bem-sucedida
       if (response.ok) {
-        // Atualiza a lista de posts sem o post excluído
         toast.success("Post deletado com sucesso!", {
           position: "top-center",
           autoClose: 1000,
@@ -173,7 +163,6 @@ const Admin = () => {
     }
   };
 
-  // Se o usuário não estiver autenticado, não renderiza o conteúdo
   if (!authContext?.user) {
     return null;
   }
@@ -186,10 +175,8 @@ const Admin = () => {
           <Separator text="Administração" />
         </div>
 
-        {/* Título em destaque */}
         <Title>Lista de posts:</Title>
 
-        {/* Container para lista de posts com fundo preto */}
         <PostsContainer>
           {posts.map((post) => (
             <PostItem key={post.id}>
@@ -209,7 +196,6 @@ const Admin = () => {
         </PostsContainer>
       </Container>
 
-      {/* Container de notificações */}
       <ToastContainer
         position="top-center"
         autoClose={4000}

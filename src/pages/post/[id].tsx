@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useEffect, useState } from 'react';
 import { useParams } from 'next/navigation';
 import styled from 'styled-components';
 import { extractYouTubeId } from '@/utils/extractYouTubeId';
 import GlobalStyle from "@/app/componentStyles/globalStyles";
 
-const HeaderHeight = "120px"; // Defina a altura do header
+const HeaderHeight = "120px"; 
 
-// Estilização do container
 const Container = styled.div`
   background-color: black;
   padding: 20px;
@@ -47,7 +47,7 @@ const Content = styled.div`
 const StyledVideoContainer = styled.div`
   position: relative;
   width: 100%;
-  padding-top: 56.25%; /* 16:9 Aspect Ratio */
+  padding-top: 56.25%;
 
   iframe {
     position: absolute;
@@ -59,7 +59,6 @@ const StyledVideoContainer = styled.div`
   }
 `;
 
-// Componente para exibir o vídeo do YouTube
 const YoutubeVideo = ({ videoId }: { videoId: string }) => {
   return (
     <StyledVideoContainer>
@@ -81,12 +80,12 @@ interface Post {
   author: string;
   content: string;
   imageUrl?: string;  
-  videoUrl?: string;  // URL youtube
+  videoUrl?: string;
 }
 
 const PostDetails = () => {
-  const params = useParams(); // Obtém os parâmetros da URL
-  const id = params?.id as string; // Garante que 'id' seja tratado como uma string
+  const params = useParams();
+  const id = params?.id as string;
   const [post, setPost] = useState<Post | null>(null);
   const [videoDetails, setVideoDetails] = useState<{ thumbnail: string; description: string } | null>(null);
 
@@ -110,7 +109,6 @@ const PostDetails = () => {
     if (post?.videoUrl) {
       const videoId = extractYouTubeId(post.videoUrl);
 
-       // Se o ID do vídeo for válido, buscar detalhes do vídeo
       if (videoId) {
         const fetchVideoDetails = async () => {
           try {
@@ -147,17 +145,14 @@ const PostDetails = () => {
         <Author>Autor: {post.author}</Author>
         <Content>{post.content}</Content>
 
-        {/* Condicional para exibir a imagem se existir */}
         {post.imageUrl && (
           <MediaContainer>
             <Image src={post.imageUrl} alt="Imagem do post" />
           </MediaContainer>
         )}
 
-        {/* Condicional para exibir o vídeo do YouTube se existir */}
         {post.videoUrl && (
           <MediaContainer>
-            {/** Exibe o componente de vídeo do YouTube passando o ID extraído **/}
             {<YoutubeVideo videoId={post.videoUrl}/>}
           </MediaContainer>
         )}

@@ -1,41 +1,38 @@
 'use client';
 import styled from "styled-components";
 
-// Estilo para o título (h1)
 const Title = styled.h1`
-  text-align: center; // Centraliza o texto
-  color: #ffffff; // Texto branco
-  font-size: 2rem; // Tamanho para telas pequenas
-  font-weight: 800; // Extrabold
-  margin: 0 auto; // Garante que o título fique centralizado na tela
+  text-align: center; 
+  color: #ffffff; 
+  font-size: 2rem; 
+  font-weight: 800; 
+  margin: 0 auto; 
   @media (min-width: 640px) {
-    font-size: 3.75rem; // Tamanho para telas grandes
+    font-size: 3.75rem; 
   }
 `;
 
-// Estilo para a descrição (p)
 const Description = styled.p`
-  text-align: center; // Centraliza o texto
-  color: #ffffff; // Texto branco
+  text-align: center; 
+  color: #ffffff; 
   margin-top: 1rem;
-  max-width: 36rem; // Largura máxima de 36rem (576px)
+  max-width: 36rem; 
   font-size: 1rem;
   margin-left: auto;
   margin-right: auto;
   @media (min-width: 640px) {
-    font-size: 1.25rem; // Tamanho maior em telas grandes
+    font-size: 1.25rem; 
   }
 `;
 
-// Estilo global para o fundo da página (preto)
 const PageContainer = styled.div`
-  background-color: transparent; // Fundo transparente
-  color: white; // Cor do texto branco por padrão
+  background-color: transparent; 
+  color: white; 
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  padding: 20px; // Adiciona padding para não colar o conteúdo nas bordas
+  padding: 20px; 
 `;
 
 interface HeroProps {
@@ -45,7 +42,6 @@ interface HeroProps {
 }
 
 export const Hero = ({
-  // showSearch = true,
   title = "Blog Post",
   description = "Use o campo abaixo para sua busca:",
 }: HeroProps) => {

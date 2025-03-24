@@ -4,7 +4,6 @@ import Link from "next/link";
 import { useContext } from "react";
 import AuthContext from "../context/authContext";
 
-// Estilizando o Header
 const Header = styled.header`
   background-color: #1f2937;
   position: fixed;
@@ -18,7 +17,6 @@ const Header = styled.header`
   height: 80px;
 `;
 
-// Container para o conteúdo do Header
 const HeaderContent = styled.div`
   max-width: 1536px;
   width: 100%;
@@ -29,14 +27,12 @@ const HeaderContent = styled.div`
   align-items: center;
 `;
 
-// Estilizando o Navbar
 const Nav = styled.nav`
   display: flex;
   gap: 1.5rem;
   margin-left: 0.5rem;
 `;
 
-// Estilizando os Links de Navegação
 const NavLink = styled(Link)`
   color: #ffffff;
   text-decoration: none;
@@ -46,7 +42,6 @@ const NavLink = styled(Link)`
   }
 `;
 
-// Logo com estilização
 const Logo = styled(Link)`
   font-weight: bold;
   text-transform: uppercase;
@@ -73,7 +68,7 @@ const NavRight = styled.div`
   display: flex;
   align-items: center;
   gap: 1rem;
-  margin-left: auto; /* Move o botão para o canto direito */
+  margin-left: auto;
 `;
 
 export default function Navbar() {
@@ -90,7 +85,6 @@ export default function Navbar() {
           </div>
 
           <Nav>
-            {/* <NavLink href="/">Home</NavLink> */}
             <NavLink href="/create">Criar Post</NavLink>
             <NavLink href="/admin">Admin</NavLink>
             {!user && <NavLink href="/login">Login</NavLink>}

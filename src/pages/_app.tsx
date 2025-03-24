@@ -1,4 +1,4 @@
-import { AuthProvider } from "@/app/context/authContext"; // Caminho corrigido para o AuthContext
+import { AuthProvider } from "@/app/context/authContext";
 import { AppProps } from "next/app";
 import "../app/globals.css";
 import Navbar from "@/app/components/Navbar";

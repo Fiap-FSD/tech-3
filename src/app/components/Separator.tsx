@@ -14,7 +14,7 @@ const SeparatorWrapper = styled.span`
 const Line = styled.span`
   height: 1px;
   flex-grow: 1;
-  background-color: #d1d5db; // Cor correspondente ao bg-neutral-100 do Tailwind
+  background-color: #d1d5db; 
 `;
 
 const Text = styled.span`
@@ -22,8 +22,8 @@ const Text = styled.span`
   padding-left: 24px;
   padding-right: 24px;
   font-size: 1.5rem; 
-  font-weight: 700; // Corresponde ao font-bold
-  color: white; // Cor do texto alterada para branca
+  font-weight: 700; 
+  color: white; 
 `;
 
 export const Separator = ({ text }: SeparatorProps) => {

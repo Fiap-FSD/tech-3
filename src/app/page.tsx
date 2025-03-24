@@ -11,7 +11,7 @@ const LoadingSpinner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 300px; // Ajuste conforme necessário
+  height: 300px;
   svg {
     width: 50px;
     height: 50px;
@@ -38,20 +38,20 @@ const Container = styled.div`
 `;
 
 const SearchInput = styled.input`
-  min-width: 450px;
-  border: 1px solid #555; /* Ajuste da borda para uma cor mais escura */
+  min-width: 200px;
+  border: 1px solid #555;
   padding: 15px;
   margin-bottom: 10px;
-  margin-left: auto; /* Centraliza à esquerda */
-  margin-right: auto; /* Centraliza à direita */
-  display: block; /* Faz com que o campo seja um bloco para que os margens automáticos funcionem */
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
   border-radius: 5px;
-  background-color: #333; /* Fundo escuro para o card */
-  color: white; /* Cor do texto dentro do card */
+  background-color: #333;
+  color: white;
   transition: box-shadow 0.2s;
 
-  /* A largura total do campo será 100% menos as margens */
-  width: calc(100% - 800px); /* Calcula a largura da caixa de texto subtraindo a margem total de 40px (20px de cada lado) */
+  
+  width: calc(100% - 800px);
 
   &:hover {
     box-shadow: 0 2px 5px rgba(255, 255, 255, 0.1); 
@@ -59,7 +59,7 @@ const SearchInput = styled.input`
 `;
 
 const MainContent = styled.main`
-  padding-top: 80px;  // A altura do Header fixo
+  padding-top: 80px;
 `;
 
 interface Post {
@@ -71,53 +71,49 @@ interface Post {
 
 export default function Home() {
   const [search, setSearch] = useState<string>('');
-  const [posts, setPosts] = useState<Post[]>([]); // Estado para armazenar os posts
+  const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        setLoading(true); // Inicia o carregamento
-        const response = await fetch('https://blog-posts-hori.onrender.com/post'); // Chamada à API
+        setLoading(true);
+        const response = await fetch('https://blog-posts-hori.onrender.com/post');
         const data = await response.json();
         const mappedPosts = data.map((post: any) => ({
-          id: post._id, // Mapeia _id para id
+          id: post._id,
           title: post.title,
           author: post.author,
-          description: post.intro, // Usa intro como descrição
-          ...post, // Inclui outras propriedades, se necessário
+          description: post.intro,
+          ...post,
         }));
-        setPosts(mappedPosts); // Atualiza o estado com os dados mapeados
+        setPosts(mappedPosts);
       } catch (error) {
         console.error('Erro ao buscar os posts:', error);
       } finally {
-        setLoading(false); // Finaliza o carregamento, independentemente do sucesso ou erro
+        setLoading(false);
       }
     };
 
     fetchPosts();
-  }, []); // Executa apenas uma vez ao montar o componente
+  }, []);
 
   const filteredPosts = posts.filter((post) =>
-    (post.title?.toLowerCase().includes(search.toLowerCase()) || // Verifica se title existe
-     post.description?.toLowerCase().includes(search.toLowerCase()) || // Verifica se description existe
-     post.author?.toLowerCase().includes(search.toLowerCase())) // Verifica se author existe
+    (post.title?.toLowerCase().includes(search.toLowerCase()) || 
+     post.description?.toLowerCase().includes(search.toLowerCase()) || 
+     post.author?.toLowerCase().includes(search.toLowerCase())) 
   );
 
   return (
     <>
-      {/* Aplica o estilo global */}
       <GlobalStyle />
 
-      {/* Navbar (Header) será fixo no topo */}
       <Navbar />
 
-      {/* Conteúdo da página */}
       <MainContent>
         <div className="mx-auto max-w-screen-xl px-4 py-32 lg:flex lg:flex-col lg:min-h-screen">
           <Hero />
           <div className="mx-auto max-w-3xl text-center">
-            {/* Campo de pesquisa */}
             <SearchInput
               type="text"
               placeholder="Pesquisar por post..."
@@ -135,7 +131,7 @@ export default function Home() {
                 </LoadingSpinner>
               ) : (
                 filteredPosts.map((post, index) => (
-                  <PostCard key={post.id || index} post={post} /> // Usa o índice como fallback para a key
+                  <PostCard key={post.id || index} post={post} /> 
                 ))
               )
             }

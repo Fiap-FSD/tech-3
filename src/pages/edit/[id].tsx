@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useRouter } from 'next/router';
 import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
@@ -7,16 +8,16 @@ import GlobalStyle from "@/app/componentStyles/globalStyles";
 import { Separator } from '@/app/components/Separator';
 import { Bounce, ToastContainer, toast } from "react-toastify";
 
-const HeaderHeight = '120px'; // Aumentando o valor para criar mais espaço
+const HeaderHeight = '120px';
 
 const Form = styled.form`
   max-width: 600px;
-  margin: 100px auto; /* Aumentei a margem superior para evitar sobreposição */
+  margin: 100px auto;
   padding: 20px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: #333; /* Cor de fundo do formulário */
+  background-color: #333;
   border-radius: 5px;
   margin-top: 1px;
 `;
@@ -25,7 +26,7 @@ const Container = styled.div`
   padding: 20px;
   max-width: 800px;
   margin: 0 auto;
-  padding-top: ${HeaderHeight}; // Adicionando o padding para não sobrepor o header
+  padding-top: ${HeaderHeight};
 `;
 
 const Input = styled.input`
@@ -33,10 +34,10 @@ const Input = styled.input`
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #444; /* Fundo mais escuro para o input */
-  color: white; /* Texto branco dentro do input */
+  background-color: #444;
+  color: white;
   ::placeholder {
-    color: #aaa; /* Placeholder em cinza */
+    color: #aaa;
   }
 `;
 
@@ -45,11 +46,11 @@ const Textarea = styled.textarea`
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #444; /* Fundo mais escuro para o textarea */
-  color: white; /* Texto branco dentro do textarea */
+  background-color: #444;
+  color: white;
   min-height: 150px;
   ::placeholder {
-    color: #aaa; /* Placeholder em cinza */
+    color: #aaa;
   }
 `;
 
@@ -62,7 +63,7 @@ const Button = styled.button`
   cursor: pointer;
   font-size: 16px;
   &:hover {
-    background-color: #218838; /* Tom mais escuro de verde ao passar o mouse */
+    background-color: #005fc4;
   }
 `;
 
@@ -80,9 +81,9 @@ const PostEdit: React.FC = () => {
     title: 'Post Exemplo',
     content: 'Conteúdo editável aqui...',
     author: 'João',
-    intro: 'Introdução ao post',  // Inicializando o campo 'intro' corretamente
-    imageUrl: 'test',  // Inicializando o campo 'imageUrl'
-    videoUrl: 'test',  // Inicializando o campo 'videoUrl'
+    intro: 'Introdução ao post',
+    imageUrl: 'test',
+    videoUrl: 'test',
   });
 
   const router = useRouter();
@@ -126,10 +127,9 @@ const PostEdit: React.FC = () => {
       return;
     }
 
-    const token = authUtils.getAuthToken(); // Obtém o token do cookie
+    const token = authUtils.getAuthToken();
 
     if (!token) {
-      // alert("Token inválido ou ausente. Faça login novamente.");
       toast.error("Token inválido ou ausente. Faça login novamente!", {
         position: "top-center",
         autoClose: 4000,
@@ -141,16 +141,16 @@ const PostEdit: React.FC = () => {
 
     try {
       const response = await fetch(`https://blog-posts-hori.onrender.com/post/${id}`, {
-        method: 'PUT', // Método PUT para atualizar o post
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`, // Inclui o token no cabeçalho
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(post), // Envia os dados atualizados como JSON
+        body: JSON.stringify(post),
       });
 
       const updatedPost = await response.json();
-      // alert('Post atualizado com sucesso!');
+      
       toast.success("Post atualizado com sucesso!", {
         position: "top-center",
         autoClose: 1000,
@@ -168,7 +168,6 @@ const PostEdit: React.FC = () => {
 
     } catch (error) {
       console.error('Erro ao atualizar o post:', error);
-      // alert('Erro ao atualizar o post. Tente novamente.');
       toast.error("Erro ao atualizar o post. Tente novamente!", {
         position: "top-center",
         autoClose: 4000,
@@ -186,7 +185,7 @@ const PostEdit: React.FC = () => {
         </div>
       </Container>
 
-      <GlobalStyle /> {/* Aplica o estilo global */}
+      <GlobalStyle /> 
 
       <Form onSubmit={handleSubmit}>
         <Input
@@ -226,7 +225,7 @@ const PostEdit: React.FC = () => {
         <Input
           type="text"
           placeholder="Link Imagem"
-          value={post.imageUrl}  // Corrigido para usar 'imageUrl'
+          value={post.imageUrl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
             setPost({ ...post, imageUrl: e.target.value })
           }
@@ -235,15 +234,15 @@ const PostEdit: React.FC = () => {
         <Input
           type="text"
           placeholder="Link Video"
-          value={post.videoUrl}  // Corrigido para usar 'videoUrl'
+          value={post.videoUrl}
           onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-            setPost({ ...post, videoUrl: extractYouTubeId(e.target.value) || '' }) // Extrai o ID ao alterar o valor ou usa string vazia
+            setPost({ ...post, videoUrl: extractYouTubeId(e.target.value) || '' }) 
           }
         />
         <Button type="submit">Salvar alterações</Button>
       </Form>
 
-      {/* Container de notificações */}
+      
       <ToastContainer
         position="top-center"
         autoClose={4000}

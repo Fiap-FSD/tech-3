@@ -1,12 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 // src/context/AuthContext.tsx
 import { createContext, useState, useEffect, ReactNode } from 'react';
 import axios from 'axios';
 import Cookies from 'js-cookie';
 import { useRouter } from 'next/router';
-import { jwtDecode } from 'jwt-decode'; // Importa a biblioteca jwt-decode
+import { jwtDecode } from 'jwt-decode'; 
 import * as authUtils from "@/utils/authUtils";
 
-// Define os tipos para o contexto
 interface User {
   id: string;
   name: string;
@@ -21,10 +21,8 @@ interface AuthContextType {
   logout: () => void;
 }
 
-// Cria o contexto de autenticação
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// Provedor de autenticação
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const response = await axios.post('https://blog-posts-hori.onrender.com/auth/login', credentials);
 
       if (response.data.access_token) {
-        authUtils.setAuthToken(response.data.access_token); // Define o token no cookie
+        authUtils.setAuthToken(response.data.access_token); 
 
         const decodedToken: any = jwtDecode(response.data.access_token);
 
@@ -58,8 +56,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.error('Token de acesso não encontrado na resposta:', response.data);
       }
     } catch (error: any) {
-      console.error('Erro no login:', error.message); // Apenas loga o erro no console
-      // alert('Erro ao realizar login. Por favor, verifique suas credenciais ou tente novamente mais tarde.');
+      console.error('Erro no login:', error.message); 
     }
   };
 
@@ -73,32 +70,31 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const checkAuth = async () => {
-    const token = authUtils.getAuthToken(); // Cookies.get('token'); // Obtém o token do cookie
+    const token = authUtils.getAuthToken(); 
      
     if (token) {
       try {
-        // Decodifica o token para extrair as informações do usuário
         const decodedToken: any = jwtDecode(token);
 
         const user = {
           id: decodedToken.sub,
-          name: decodedToken.name || 'Unknown', // Garante que 'name' esteja presente
+          name: decodedToken.name || 'Unknown', 
           email: decodedToken.email,
           role: decodedToken.role,
         };
 
-        setUser(user); // Define o usuário no estado
+        setUser(user); 
       } catch (error) {
         console.error('Erro ao decodificar o token:', error);
-        authUtils.removeAuthToken(); // Remove o token inválido
+        authUtils.removeAuthToken(); 
         setUser(null);
       }
     }
-    setLoading(false); // Define o carregamento como concluído
+    setLoading(false); 
   };
 
   useEffect(() => {
-    checkAuth(); // Verifica a autenticação ao carregar o aplicativo
+    checkAuth(); 
   }, []);
 
   const value = {

@@ -8,18 +8,18 @@ import GlobalStyle from "@/app/componentStyles/globalStyles";
 import { Bounce, ToastContainer, toast } from "react-toastify";
 
 
-const HeaderHeight = "120px"; // Aumentando o valor para criar mais espaço
+const HeaderHeight = "120px";
 
 const Form = styled.form`
   max-width: 600px;
-  margin: 20px auto; /* Reduzindo o espaço superior */
+  margin: 20px auto;
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
   display: flex;
   flex-direction: column;
   gap: 15px;
-  background-color: #222; /* Cor de fundo do formulário */
+  background-color: #222;
 `;
 
 const Input = styled.input`
@@ -27,8 +27,8 @@ const Input = styled.input`
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #333; /* Fundo escuro para os campos de entrada */
-  color: white; /* Texto branco nos campos */
+  background-color: #333;
+  color: white;
 `;
 
 const Container = styled.div`
@@ -63,32 +63,26 @@ const Login = () => {
     password: "",
   });
 
-  // const [error, setError] = useState<string | null>(null); // Estado para mensagens de erro
-  const authContext = useContext(AuthContext); // Usando o AuthContext
+  const authContext = useContext(AuthContext);
   const router = useRouter();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Verifica se o authContext foi fornecido
     if (!authContext) {
       console.error("AuthContext não foi fornecido.");
       return;
     }
 
     try {
-      // Tenta fazer login
       await authContext.login(credentials);
 
-      // Verifica se o usuário foi autenticado
       if (authContext.user) {
-        // Redireciona com base no papel (role) do usuário
         if (authContext.user.role === "admin") {
-          router.push("/admin"); // Redireciona para /admin se for administrador
+          router.push("/admin");
         } else {
-          router.push("/create"); // Redireciona para /create se for usuário comum
+          router.push("/create");
         }
       } else {
-        // Se o usuário não existir, exibe uma mensagem de erro
         toast.error("Usuário não encontrado. Verifique suas credenciais.", {
           position: "top-center",
           autoClose: 4000,
@@ -115,7 +109,6 @@ const Login = () => {
         </div>
       </Container>
 
-      {/* Aplica o estilo global para o fundo preto e texto branco */}
       <GlobalStyle />
       <Form onSubmit={handleSubmit}>       
         <Input
@@ -137,7 +130,6 @@ const Login = () => {
         <Button type="submit">Entrar</Button>
       </Form>
 
-      {/* Container de notificações */}
       <ToastContainer
         position="top-center"
         autoClose={4000}

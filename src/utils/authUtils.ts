@@ -1,13 +1,13 @@
 import Cookies from "js-cookie";
 
 export const getAuthToken = (): string | undefined => {
-  return Cookies.get("token"); // Obtém o token do cookie
+  return Cookies.get("token"); 
 };
 
 export const setAuthToken = (token: string): void => {
-  Cookies.set("token", token, { expires: 7 }); // Define o token com validade de 7 dias
+  Cookies.set("token", token, { expires: 7 });
 };
 
 export const removeAuthToken = (): void => {
-  Cookies.remove("token"); // Remove o token do cookie
+  Cookies.remove("token"); 
 };
