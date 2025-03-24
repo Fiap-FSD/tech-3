@@ -1,7 +1,6 @@
 'use client';
 import styled from 'styled-components';
 import Link from 'next/link';
-import { useState } from 'react';
 
 const Card = styled.div`
   border: 1px solid #555;
