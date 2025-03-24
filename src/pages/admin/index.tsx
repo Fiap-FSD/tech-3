@@ -29,11 +29,27 @@ const Title = styled.h1`
 
 const PostItem = styled.div`
   display: flex;
+  flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
   border-bottom: 1px solid #555; 
   color: white; 
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+`;
+
+const ButtonContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  
+  @media (max-width: 600px) {
+    margin-top: 10px;
+  }
 `;
 
 const Button = styled.button`
@@ -183,14 +199,14 @@ const Admin = () => {
               <span>
                 {post.title} - {post.author}
               </span>
-              <div>
+              <ButtonContainer>
                 <Link href={`/edit/${post.id}`} passHref>
                   <EditButton>Editar</EditButton>
                 </Link>
                 <DeleteButton onClick={() => handleDelete(post.id)}>
                   Excluir
                 </DeleteButton>
-              </div>
+              </ButtonContainer>
             </PostItem>
           ))}
         </PostsContainer>
