@@ -64,6 +64,9 @@ src/
       global.css     Estilos globais do projeto
     register/
       StyledComponentsRegistry.tsx      Componente para garantir a renderização dos estilos
+    utils/
+      authUtils.ts      Componente gerencia o token de autenticação usando cookies
+      extractYouTubeId.ts Componente extrai o ID do youtube de uma URL
     layout.tsx       Layout principal da aplicação
     page.css         Estilos específicos da página
     page.tsx         Página principal (Home)
@@ -78,10 +81,7 @@ src/
       index.tsx      Página de login
     post/
       [id].tsx       Página de detalhes do post (roteamento dinâmico)
-    _app.tsx         Componente principal da aplicação
-  utils/
-    authUtils.ts      Componente gerencia o token de autenticação usando cookies
-    extractYouTubeId.ts Componente extrai o ID do youtube de uma URL
+    _app.tsx         Componente principal da aplicação  
 package.json
 ```
 
@@ -151,6 +151,16 @@ A autenticação é feita usando JWT. Quando o usuário faz login, o token JWT �
 
 Com o link que aparecerá no seu terminal, copie e cole no seu navegador.
 
+## 💥 Deploy
+
+O deploy é essencial para disponibilizar a aplicação para os usuários finais, garantindo que qualquer pessoa possa acessá-la diretamente pela internet, sem precisar instalar nada.
+
+Optou-se pela Vercel porque ela possui suporte nativo ao Next.js, o framework utilizado no projeto. Além disso, o processo de deploy é extremamente simples e rápido.
+
+Outro ponto importante é que a integração com o GitHub permite que o deploy seja automatizado, ou seja, sempre que realizamos um push na branch principal, a Vercel detecta as mudanças, faz o build e atualiza automaticamente a aplicação em produção.
+
+👉 **[Link para o site](https://blog-post-tech3.vercel.app/)**  
+
 👉 **[Link para o vídeo](https://www.youtube.com/watch?v=bK5arno51pw)**  
 
 ## 📜 Conclusão
@@ -161,6 +171,3 @@ A arquitetura adotada baseada no padrão NextJS que trouxe vantagens significati
 
 O projeto reforçou a importância das boas práticas de desenvolvimento, como controle de versão pelo GitHub, organização modular do código e foco na usabilidade. O resultado é uma aplicação funcional e bem estruturada, pronta para ser utilizada por docentes e alunos, oferecendo um ambiente de leitura e interação intuitivo.
 
-> [!CAUTION]
-> AJEITAR A CONCLUSÃO
-> Retirar Configuração do ambiente, não estamos utilizando
