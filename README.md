@@ -151,7 +151,7 @@ A autenticação é feita usando JWT. Quando o usuário faz login, o token JWT �
 
 Com o link que aparecerá no seu terminal, copie e cole no seu navegador.
 
-👉 **[Link para o vídeo](https://youtu.be/ILa9iL7bAOs)**  
+👉 **[Link para o vídeo](https://www.youtube.com/watch?v=bK5arno51pw)**  
 
 ## 📜 Conclusão
 
@@ -163,5 +163,4 @@ O projeto reforçou a importância das boas práticas de desenvolvimento, como c
 
 > [!CAUTION]
 > AJEITAR A CONCLUSÃO
-> Trocar o link para o vídeo de apresentação
 > Retirar Configuração do ambiente, não estamos utilizando
